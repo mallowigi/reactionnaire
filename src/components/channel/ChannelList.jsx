@@ -8,17 +8,22 @@ const {Card, List} = mui;
 class ChannelList extends React.Component {
   constructor (props) {
     super(props);
+
+    this.state = {
+      channels: []
+    }
   }
 
   render () {
-    let channelNodes = this.props.channels.map((channel) => {
+    let channelNodes = this.state.channels.map((channel) => {
       return (
         <Channel channel={channel}></Channel>
       );
-    })
+    });
+
     return (
       <Card style={{
-      flexGrow: 1
+        flexGrow: 1
       }}>
         <List>{channelNodes}</List>
       </Card>
