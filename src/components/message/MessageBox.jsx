@@ -3,6 +3,7 @@ import mui from 'material-ui';
 import Firebase from 'firebase';
 import _ from 'lodash';
 
+import firebaseRefs from '../../config/firebaseRefs';
 
 const {ListItem, Card} = mui;
 
@@ -14,7 +15,7 @@ class MessageBox extends React.Component {
       message: ''
     };
 
-    this.firebaseRef = new Firebase('https://intense-torch-3109.firebaseio.com/messages');
+    this.firebaseRef = new Firebase(firebaseRefs.messages);
   }
 
   static propTypes = {

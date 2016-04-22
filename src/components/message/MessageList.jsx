@@ -4,6 +4,8 @@ import mui from 'material-ui';
 import Firebase from 'firebase';
 import _ from 'lodash';
 
+import firebaseRefs from '../../config/firebaseRefs';
+
 // Directives
 const {Card, List} = mui;
 
@@ -15,7 +17,7 @@ class MessageList extends React.Component {
       messages: {}
     };
 
-    this.firebaseRef = new Firebase('https://intense-torch-3109.firebaseio.com/messages');
+    this.firebaseRef = new Firebase(firebaseRefs.messages);
 
     // Child Add
     this.firebaseRef.on('child_added', (message) => {

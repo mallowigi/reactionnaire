@@ -71,11 +71,16 @@
 	
 	var _App2 = _interopRequireDefault(_App);
 	
+	var _firebase = __webpack_require__(/*! firebase */ 386);
+	
+	var _firebase2 = _interopRequireDefault(_firebase);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	__webpack_require__(/*! ./main.styl */ 393);
 	
 	_reactDom2.default.render(_react2.default.createElement(_App2.default, null), window.container);
+	_firebase2.default.goOffline();
 
 /***/ },
 /* 2 */
@@ -72018,6 +72023,10 @@
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
+	var _firebaseRefs = __webpack_require__(/*! ../../config/firebaseRefs */ 397);
+	
+	var _firebaseRefs2 = _interopRequireDefault(_firebaseRefs);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -72059,7 +72068,7 @@
 	      message: ''
 	    };
 	
-	    _this.firebaseRef = new _firebase2.default('https://intense-torch-3109.firebaseio.com/messages');
+	    _this.firebaseRef = new _firebase2.default(_firebaseRefs2.default.messages);
 	    return _this;
 	  }
 	
@@ -72495,6 +72504,23 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
+
+/***/ },
+/* 397 */
+/*!************************************!*\
+  !*** ./src/config/firebaseRefs.js ***!
+  \************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  socket: 'https://intense-torch-3109.firebaseio.com/',
+	  messages: 'https://intense-torch-3109.firebaseio.com/messages'
+	};
 
 /***/ }
 /******/ ]);
