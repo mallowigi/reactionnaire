@@ -5,4 +5,4 @@ import Firebase from 'firebase';
 require('./main.styl');
 
 ReactDOM.render(<App/>, window.container);
-Firebase.goOffline();
+// Firebase.goOffline();

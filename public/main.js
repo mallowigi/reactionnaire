@@ -80,7 +80,7 @@
 	__webpack_require__(/*! ./main.styl */ 411);
 	
 	_reactDom2.default.render(_react2.default.createElement(_App2.default, null), window.container);
-	_firebase2.default.goOffline();
+	// Firebase.goOffline();
 
 /***/ },
 /* 2 */
@@ -20624,7 +20624,7 @@
 	      var view = _react2.default.createElement(_Login2.default, null);
 	
 	      // Logged in
-	      if (this.props.user) {
+	      if (!this.props.user) {
 	        view = _react2.default.createElement(
 	          'main',
 	          null,
@@ -71912,9 +71912,11 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	var FIREBASE_URL = 'https://intense-torch-3109.firebaseio.com/';
 	exports.default = {
-	  socket: 'https://intense-torch-3109.firebaseio.com/',
-	  messages: 'https://intense-torch-3109.firebaseio.com/messages'
+	  socket: FIREBASE_URL,
+	  messages: FIREBASE_URL + '/messages',
+	  channels: FIREBASE_URL + '/channels'
 	};
 
 /***/ },
@@ -71932,6 +71934,8 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	var _class;
+	
 	var _react = __webpack_require__(/*! react */ 2);
 	
 	var _react2 = _interopRequireDefault(_react);
@@ -71944,6 +71948,14 @@
 	
 	var _materialUi2 = _interopRequireDefault(_materialUi);
 	
+	var _connectToStores = __webpack_require__(/*! alt-utils/lib/connectToStores */ 415);
+	
+	var _connectToStores2 = _interopRequireDefault(_connectToStores);
+	
+	var _ChatStore = __webpack_require__(/*! ../../stores/ChatStore */ 410);
+	
+	var _ChatStore2 = _interopRequireDefault(_ChatStore);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -71955,26 +71967,42 @@
 	// Directives
 	var Card = _materialUi2.default.Card;
 	var List = _materialUi2.default.List;
+	var CircularProgress = _materialUi2.default.CircularProgress;
 	
-	var ChannelList = function (_React$Component) {
+	var ChannelList = (0, _connectToStores2.default)(_class = function (_React$Component) {
 	  _inherits(ChannelList, _React$Component);
 	
 	  function ChannelList(props) {
 	    _classCallCheck(this, ChannelList);
 	
+	    // Call the new getChannels method that get imported from the datasource
+	
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ChannelList).call(this, props));
 	
-	    _this.state = {
-	      channels: []
-	    };
+	    _ChatStore2.default.getChannels();
 	    return _this;
 	  }
 	
 	  _createClass(ChannelList, [{
 	    key: 'render',
 	    value: function render() {
-	      var channelNodes = this.state.channels.map(function (channel) {
-	        return _react2.default.createElement(_Channel2.default, { channel: channel });
+	      // Display a loader while fetching channels
+	      if (!this.props.channels) {
+	        return _react2.default.createElement(
+	          Card,
+	          { style: { flexGrow: 1 } },
+	          _react2.default.createElement(CircularProgress, { mode: 'indeterminate', style: {
+	              paddingTop: '20px',
+	              paddingBottom: '20px',
+	              margin: '0 auto',
+	              display: 'block',
+	              width: '60px'
+	            } })
+	        );
+	      }
+	
+	      var channelNodes = _.map(this.props.channels, function (channel, key) {
+	        return _react2.default.createElement(_Channel2.default, { key: channel.key, channel: channel.name });
 	      });
 	
 	      return _react2.default.createElement(
@@ -71989,10 +72017,20 @@
 	        )
 	      );
 	    }
+	  }], [{
+	    key: 'getStores',
+	    value: function getStores() {
+	      return [_ChatStore2.default];
+	    }
+	  }, {
+	    key: 'getPropsFromStores',
+	    value: function getPropsFromStores() {
+	      return _ChatStore2.default.getState();
+	    }
 	  }]);
 	
 	  return ChannelList;
-	}(_react2.default.Component);
+	}(_react2.default.Component)) || _class;
 	
 	exports.default = ChannelList;
 
@@ -72041,9 +72079,15 @@
 	  _createClass(Channel, [{
 	    key: 'render',
 	    value: function render() {
+	      var style = {};
+	      if (this.props.channel.selected) {
+	        style.backgroundColor = '#d0d0d0';
+	      }
+	
 	      return _react2.default.createElement(
 	        ListItem,
-	        null,
+	        { style: style },
+	        '#',
 	        this.props.channel
 	      );
 	    }
@@ -72265,6 +72309,10 @@
 	
 	var _firebaseRefs2 = _interopRequireDefault(_firebaseRefs);
 	
+	var _constants = __webpack_require__(/*! ../constants */ 418);
+	
+	var _constants2 = _interopRequireDefault(_constants);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -72272,16 +72320,19 @@
 	var Actions = function () {
 	  function Actions() {
 	    _classCallCheck(this, Actions);
+	
+	    this.generateActions(_constants2.default.CHANNELS_RECEIVED, _constants2.default.CHANNELS_FAILED);
 	  }
+	
+	  /**
+	   * Log the user
+	   * @param args
+	   * @returns {function(dispatcher)}
+	   */
+	
 	
 	  _createClass(Actions, [{
 	    key: 'login',
-	
-	    /**
-	     * Log the user
-	     * @param args
-	     * @returns {function(dispatcher)}
-	     */
 	    value: function login() {
 	      var args = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
@@ -74116,7 +74167,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _dec, _dec2, _class, _desc, _value, _class2;
+	var _dec, _dec2, _dec3, _dec4, _class, _desc, _value, _class2;
 	
 	var _alt = __webpack_require__(/*! ../alt */ 395);
 	
@@ -74127,6 +74178,18 @@
 	var _actions2 = _interopRequireDefault(_actions);
 	
 	var _decorators = __webpack_require__(/*! alt-utils/lib/decorators */ 417);
+	
+	var _ChannelSource = __webpack_require__(/*! ../sources/ChannelSource */ 419);
+	
+	var _ChannelSource2 = _interopRequireDefault(_ChannelSource);
+	
+	var _index = __webpack_require__(/*! ../constants/index */ 418);
+	
+	var _index2 = _interopRequireDefault(_index);
+	
+	var _lodash = __webpack_require__(/*! lodash */ 387);
+	
+	var _lodash2 = _interopRequireDefault(_lodash);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -74161,7 +74224,7 @@
 	  return desc;
 	}
 	
-	var ChatStore = (_dec = (0, _decorators.decorate)(_alt2.default), _dec2 = (0, _decorators.bind)(_actions2.default.login), _dec(_class = (_class2 = function () {
+	var ChatStore = (_dec = (0, _decorators.datasource)(_ChannelSource2.default), _dec2 = (0, _decorators.decorate)(_alt2.default), _dec3 = (0, _decorators.bind)(_actions2.default.login), _dec4 = (0, _decorators.bind)(_actions2.default[_index2.default.CHANNELS_RECEIVED]), _dec(_class = _dec2(_class = (_class2 = function () {
 	  function ChatStore() {
 	    _classCallCheck(this, ChatStore);
 	
@@ -74175,10 +74238,27 @@
 	    value: function login(user) {
 	      this.setState({ user: user });
 	    }
+	  }, {
+	    key: 'receivedChannels',
+	    value: function receivedChannels(channels) {
+	      var selectedChannel = void 0;
+	      _lodash2.default.each(channels, function (channel, key, i) {
+	        channels[key].key = key;
+	        if (i == 0) {
+	          selectedChannel = channel;
+	          channel.selected = true;
+	        }
+	      });
+	
+	      this.setState({
+	        channels: channels,
+	        selectedChannel: selectedChannel
+	      });
+	    }
 	  }]);
 	
 	  return ChatStore;
-	}(), (_applyDecoratedDescriptor(_class2.prototype, 'login', [_dec2], Object.getOwnPropertyDescriptor(_class2.prototype, 'login'), _class2.prototype)), _class2)) || _class);
+	}(), (_applyDecoratedDescriptor(_class2.prototype, 'login', [_dec3], Object.getOwnPropertyDescriptor(_class2.prototype, 'login'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'receivedChannels', [_dec4], Object.getOwnPropertyDescriptor(_class2.prototype, 'receivedChannels'), _class2.prototype)), _class2)) || _class) || _class);
 	exports.default = _alt2.default.createStore(ChatStore);
 
 /***/ },
@@ -74829,6 +74909,89 @@
 	    return Store;
 	  };
 	}
+
+/***/ },
+/* 418 */
+/*!********************************!*\
+  !*** ./src/constants/index.js ***!
+  \********************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  CHANNELS_RECEIVED: 'channelsReceived',
+	  CHANNELS_FAILED: 'channelsFailed'
+	};
+
+/***/ },
+/* 419 */
+/*!**************************************!*\
+  !*** ./src/sources/ChannelSource.js ***!
+  \**************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _actions = __webpack_require__(/*! ../actions */ 394);
+	
+	var _actions2 = _interopRequireDefault(_actions);
+	
+	var _firebase = __webpack_require__(/*! firebase */ 386);
+	
+	var _firebase2 = _interopRequireDefault(_firebase);
+	
+	var _firebaseRefs = __webpack_require__(/*! ../config/firebaseRefs */ 389);
+	
+	var _firebaseRefs2 = _interopRequireDefault(_firebaseRefs);
+	
+	var _index = __webpack_require__(/*! ../constants/index */ 418);
+	
+	var _index2 = _interopRequireDefault(_index);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var firebaseRef = new _firebase2.default(_firebaseRefs2.default.channels);
+	
+	/**
+	 * Define the sources for getting channels
+	 * @type {{getChannels: {}}}
+	 */
+	var ChannelSource = {
+	  /**
+	   * For each source we need to define a remote method
+	   */
+	  getChannels: {
+	    /**
+	     * Binds the data to the state of the store this source will be bound to
+	     * @param state
+	     */
+	
+	    remote: function remote(state) {
+	      return new Promise(function (resolve, reject) {
+	        // Get the data from firebase
+	        firebaseRef.once('value', function (snapshot) {
+	          var channels = snapshot.val();
+	          resolve(channels);
+	        });
+	      });
+	    },
+	
+	
+	    // Defines
+	    success: _actions2.default[_index2.default.CHANNELS_RECEIVED],
+	    error: _actions2.default[_index2.default.CHANNELS_FAILED]
+	  }
+	};
+	
+	exports.default = ChannelSource;
 
 /***/ }
 /******/ ]);

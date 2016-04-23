@@ -57,7 +57,7 @@ N
     var view = <Login/>;
 
     // Logged in
-    if (this.props.user) {
+    if (!this.props.user) {
       view = (
         <main>
           <AppBar title="Chat with friends"></AppBar>

@@ -2,13 +2,23 @@ import alt from '../alt';
 import Firebase from 'firebase';
 import firebaseRefs from '../config/firebaseRefs';
 
+import Constants from '../constants';
+
 class Actions {
+
+  constructor () {
+    this.generateActions(
+      Constants.CHANNELS_RECEIVED,
+      Constants.CHANNELS_FAILED
+    )
+  }
+
   /**
    * Log the user
    * @param args
    * @returns {function(dispatcher)}
    */
-  login (args={}) {
+  login (args = {}) {
     return (dispatch) => {
       let firebaseRef = new Firebase(firebaseRefs.socket);
       firebaseRef.authWithOAuthPopup("google")

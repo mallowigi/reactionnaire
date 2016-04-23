@@ -1,4 +1,6 @@
+const FIREBASE_URL = 'https://intense-torch-3109.firebaseio.com/';
 export default {
-  socket: 'https://intense-torch-3109.firebaseio.com/',
-  messages: 'https://intense-torch-3109.firebaseio.com/messages'
-}
+  socket: FIREBASE_URL,
+  messages: `${FIREBASE_URL}/messages`,
+  channels: `${FIREBASE_URL}/channels`
+};
