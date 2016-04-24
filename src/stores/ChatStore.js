@@ -5,35 +5,43 @@ import ChannelSource from '../sources/ChannelSource';
 import Constants from '../constants/index';
 import _ from 'lodash';
 
-
+/**
+ * @class
+ * @mixes StoreModel
+ */
 @datasource(ChannelSource)
 @decorate(alt)
 class ChatStore {
+
   constructor () {
     this.state = {
-      user: null
+      user: null,
+      channels: [],
+      selectedChannel: null
     };
   }
 
+  /**
+   * Login by setting the user to the logged in user
+   * @param user
+   */
   @bind(Actions.login)
   login (user) {
     this.setState({user: user});
   }
 
+  /**
+   * Store the channels received
+   * @param channels
+   */
   @bind(Actions[Constants.CHANNELS_RECEIVED])
   receivedChannels (channels) {
-    let selectedChannel;
-    _.each(channels, (channel, key, i) => {
-      channels[key].key = key;
-      if (i == 0) {
-        selectedChannel = channel;
-        channel.selected = true;
-      }
-    });
+    let selectedChannel = _.first(_.toArray(channels));
+    selectedChannel.selected = true;
 
     this.setState({
-      channels: channels,
-      selectedChannel: selectedChannel
+      channels,
+      selectedChannel
     })
   }
 }

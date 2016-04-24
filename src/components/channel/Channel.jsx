@@ -14,7 +14,7 @@ class Channel extends React.Component {
       style.backgroundColor = '#d0d0d0';
     }
 
-    return (<ListItem style={style}>#{this.props.channel}</ListItem>);
+    return (<ListItem style={style}>#{this.props.channel.name}</ListItem>);
   }
 }
 
