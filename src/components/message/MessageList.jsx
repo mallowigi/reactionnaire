@@ -1,14 +1,17 @@
 import React from 'react';
 import Message from './Message.jsx';
 import mui from 'material-ui';
-import Firebase from 'firebase';
 import _ from 'lodash';
 
-import firebaseRefs from '../../config/firebaseRefs';
+import connectToStores from 'alt-utils/lib/connectToStores';
+
+import ChatStore from '../../stores/ChatStore';
+import MessagesStore from '../../stores/MessagesStore';
 
 // Directives
-const {Card, List} = mui;
+const {Card, List, CircularProgress} = mui;
 
+@connectToStores
 class MessageList extends React.Component {
   constructor (props) {
     super(props);
@@ -16,35 +19,31 @@ class MessageList extends React.Component {
     this.state = {
       messages: {}
     };
-
-    this.firebaseRef = new Firebase(firebaseRefs.messages);
-
-    // Child Add
-    this.firebaseRef.on('child_added', (message) => {
-      if (this.state.messages[message.key()]) {
-        return;
-      }
-
-      let msg = message.val();
-      msg.key = message.key();
-
-      this.state.messages[msg.key] = msg;
-      this.setState({messages: this.state.messages});
-    });
   }
 
 
+  static getStores () {
+    return [ChatStore, MessagesStore];
+  }
+
+  static getPropsFromStores () {
+    return MessagesStore.getState();
+  }
 
   render () {
-    let messageNodes = _.map(this.state.messages, ((message, key) => {
-      return (
-        <Message key={key} message={message.message}></Message>
-      );
-    }));
+    let messageNodes = null;
+
+    if (this.props.messages) {
+      messageNodes = _.map(this.props.messages, ((message, key) => {
+        return (
+          <Message key={message.key} message={message}></Message>
+        );
+      }));
+    }
 
     return (
       <Card style={{
-        flexGrow: 2,
+        flex: 2,
         marginLeft: 10
       }}>
         <List>{messageNodes}</List>

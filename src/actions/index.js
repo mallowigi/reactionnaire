@@ -9,7 +9,10 @@ class Actions {
   constructor () {
     this.generateActions(
       Constants.CHANNELS_RECEIVED,
-      Constants.CHANNELS_FAILED
+      Constants.CHANNELS_FAILED,
+      Constants.MESSAGES_RECEIVED,
+      Constants.MESSAGES_FAILED,
+      Constants.SELECTED_CHANNEL
     )
   }
 

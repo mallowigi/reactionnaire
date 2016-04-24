@@ -3,6 +3,7 @@ import Channel from './Channel.jsx';
 import mui from 'material-ui';
 import connectToStores from 'alt-utils/lib/connectToStores'
 import ChatStore from '../../stores/ChatStore';
+import ChannelStore from '../../stores/ChannelStore';
 
 // Directives
 const {Card, List, CircularProgress} = mui;
@@ -13,15 +14,15 @@ class ChannelList extends React.Component {
     super(props);
 
     // Call the new getChannels method that get imported from the datasource
-    ChatStore.getChannels();
+    ChannelStore.getChannels();
   }
 
   static getStores () {
-    return [ChatStore];
+    return [ChatStore, ChannelStore];
   }
 
   static getPropsFromStores () {
-    return ChatStore.getState();
+    return ChannelStore.getState();
   }
 
   render () {
@@ -48,7 +49,7 @@ class ChannelList extends React.Component {
 
     return (
       <Card style={{
-        flexGrow: 1
+        flex: 1
       }}>
         <List>{channelNodes}</List>
       </Card>
