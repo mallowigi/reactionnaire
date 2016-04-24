@@ -38,6 +38,20 @@ class ChannelsStore {
     // Dispatch an action that the selected channel has been changed
     Actions[Constants.SELECTED_CHANNEL].defer(selectedChannel);
   }
+
+  @bind(Actions[Constants.SELECTED_CHANNEL])
+  selectedChannel (channel) {
+    let channels = _.map(this.state.channels, chan => {
+      chan.selected = false;
+      return chan;
+    });
+
+    channel.selected = true;
+    this.setState({
+      channels: channels,
+      selectedChannel: channel
+    })
+  }
  
 }
 

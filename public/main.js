@@ -72066,6 +72066,14 @@
 	
 	var _materialUi2 = _interopRequireDefault(_materialUi);
 	
+	var _actions = __webpack_require__(/*! ../../actions */ 394);
+	
+	var _actions2 = _interopRequireDefault(_actions);
+	
+	var _index = __webpack_require__(/*! ../../constants/index */ 418);
+	
+	var _index2 = _interopRequireDefault(_index);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -72082,7 +72090,13 @@
 	  function Channel(props) {
 	    _classCallCheck(this, Channel);
 	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Channel).call(this, props));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Channel).call(this, props));
+	
+	    _this.onClick = function (evt) {
+	      _actions2.default[_index2.default.SELECTED_CHANNEL](_this.props.channel);
+	    };
+	
+	    return _this;
 	  }
 	
 	  _createClass(Channel, [{
@@ -72095,7 +72109,9 @@
 	
 	      return _react2.default.createElement(
 	        ListItem,
-	        { style: style },
+	        { style: style, key: this.props.channel.key,
+	          onClick: this.onClick
+	        },
 	        '#',
 	        this.props.channel.name
 	      );
@@ -75096,7 +75112,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _dec, _dec2, _dec3, _class, _desc, _value, _class2;
+	var _dec, _dec2, _dec3, _dec4, _class, _desc, _value, _class2;
 	
 	var _alt = __webpack_require__(/*! ../alt */ 395);
 	
@@ -75157,7 +75173,7 @@
 	 * @class
 	 * @mixes StoreModel
 	 */
-	var ChannelsStore = (_dec = (0, _decorators.datasource)(_ChannelSource2.default), _dec2 = (0, _decorators.decorate)(_alt2.default), _dec3 = (0, _decorators.bind)(_actions2.default[_index2.default.CHANNELS_RECEIVED]), _dec(_class = _dec2(_class = (_class2 = function () {
+	var ChannelsStore = (_dec = (0, _decorators.datasource)(_ChannelSource2.default), _dec2 = (0, _decorators.decorate)(_alt2.default), _dec3 = (0, _decorators.bind)(_actions2.default[_index2.default.CHANNELS_RECEIVED]), _dec4 = (0, _decorators.bind)(_actions2.default[_index2.default.SELECTED_CHANNEL]), _dec(_class = _dec2(_class = (_class2 = function () {
 	  function ChannelsStore() {
 	    _classCallCheck(this, ChannelsStore);
 	
@@ -75188,10 +75204,24 @@
 	      // Dispatch an action that the selected channel has been changed
 	      _actions2.default[_index2.default.SELECTED_CHANNEL].defer(selectedChannel);
 	    }
+	  }, {
+	    key: 'selectedChannel',
+	    value: function selectedChannel(channel) {
+	      var channels = _lodashMixins2.default.map(this.state.channels, function (chan) {
+	        chan.selected = false;
+	        return chan;
+	      });
+	
+	      channel.selected = true;
+	      this.setState({
+	        channels: channels,
+	        selectedChannel: channel
+	      });
+	    }
 	  }]);
 	
 	  return ChannelsStore;
-	}(), (_applyDecoratedDescriptor(_class2.prototype, 'receivedChannels', [_dec3], Object.getOwnPropertyDescriptor(_class2.prototype, 'receivedChannels'), _class2.prototype)), _class2)) || _class) || _class);
+	}(), (_applyDecoratedDescriptor(_class2.prototype, 'receivedChannels', [_dec3], Object.getOwnPropertyDescriptor(_class2.prototype, 'receivedChannels'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'selectedChannel', [_dec4], Object.getOwnPropertyDescriptor(_class2.prototype, 'selectedChannel'), _class2.prototype)), _class2)) || _class) || _class);
 	exports.default = _alt2.default.createStore(ChannelsStore);
 
 /***/ },
