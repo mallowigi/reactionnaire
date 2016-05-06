@@ -6,6 +6,7 @@ import _ from '../config/lodashMixins';
 import MessagesSource from '../sources/MessagesSource';
 
 import Message from '../models/Message';
+import User from '../models/User';
 
 /**
  * @class
@@ -20,7 +21,7 @@ class MessagesStore {
       messages: [],
       selectedChannel: null,
       messagesLoading: true,
-      user: null
+      user: new User()
     };
   }
 
@@ -70,14 +71,14 @@ class MessagesStore {
       this.getInstance().sendMessage();
     }, 0)
   }
-  
-  @bind(Actions[Constants.SEND_MESSAGE_SUCCESS])
-  messageSent (message) {
-    let messages = [...this.state.messages, message];
+
+  @bind(Actions[Constants.MESSAGE_RECEIVED])
+  messageReceived (message) {
+    let messages = [...this.state.messages, new Message(message)];
 
     this.setState({
       messages
-    })
+    });
   }
 }
 

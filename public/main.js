@@ -20637,7 +20637,7 @@
 	          _react2.default.createElement(AppBar, { title: 'Chat with friends' }),
 	          _react2.default.createElement(
 	            'section',
-	            { id: 'app' },
+	            { id: 'app', style: { maxHeight: '60vh' } },
 	            _react2.default.createElement(_ChannelList2.default, null),
 	            _react2.default.createElement(_MessageList2.default, null)
 	          ),
@@ -55466,9 +55466,9 @@
 	      var messageNodes = null;
 	
 	      if (!this.props.messagesLoading) {
-	        messageNodes = _lodash2.default.map(this.props.messages, function (message, key) {
+	        messageNodes = _lodash2.default.chain(this.props.messages).orderBy('date', 'desc').map(function (message, key) {
 	          return _react2.default.createElement(_Message2.default, { key: message.key, message: message });
-	        });
+	        }).value();
 	      } else {
 	        messageNodes = _react2.default.createElement(CircularProgress, { mode: 'indeterminate',
 	          style: {
@@ -55482,7 +55482,7 @@
 	
 	      return _react2.default.createElement(
 	        Card,
-	        { style: { flex: 2, marginLeft: 10 } },
+	        { style: { flex: 2, marginLeft: 10, overflow: 'auto' } },
 	        _react2.default.createElement(
 	          List,
 	          null,
@@ -55554,19 +55554,26 @@
 	    key: 'render',
 	    value: function render() {
 	      var message = this.props.message;
-	
-	      var avatar = _react2.default.createElement(Avatar, { src: message.profile_pic });
-	      return _react2.default.createElement(
-	        ListItem,
-	        { leftAvatar: avatar,
-	          primaryText: message.author,
-	          secondaryText: message.date },
+	      var secondaryText = _react2.default.createElement(
+	        'div',
+	        { style: { height: 'auto' } },
 	        _react2.default.createElement(
-	          'p',
+	          'span',
+	          { style: { color: 'black' } },
+	          message.author
+	        ),
+	        _react2.default.createElement('br', null),
+	        _react2.default.createElement(
+	          'small',
 	          null,
-	          message.message
+	          message.date
 	        )
 	      );
+	
+	      var avatar = _react2.default.createElement(Avatar, { src: message.profile_pic });
+	      return _react2.default.createElement(ListItem, { leftAvatar: avatar,
+	        primaryText: message.message,
+	        secondaryText: secondaryText });
 	    }
 	  }]);
 	
@@ -71834,6 +71841,10 @@
 	
 	var _decorators = __webpack_require__(/*! alt-utils/lib/decorators */ 409);
 	
+	var _User = __webpack_require__(/*! ../models/User */ 425);
+	
+	var _User2 = _interopRequireDefault(_User);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -71876,7 +71887,7 @@
 	    _classCallCheck(this, ChatStore);
 	
 	    this.state = {
-	      user: null
+	      user: new _User2.default()
 	    };
 	  }
 	
@@ -73685,7 +73696,7 @@
 	  function Actions() {
 	    _classCallCheck(this, Actions);
 	
-	    this.generateActions(_Constants2.default.CHANNELS_RECEIVED, _Constants2.default.CHANNELS_FAILED, _Constants2.default.MESSAGES_RECEIVED, _Constants2.default.MESSAGES_FAILED, _Constants2.default.MESSAGES_LOADING, _Constants2.default.SELECTED_CHANNEL, _Constants2.default.SEND_MESSAGE_SUCCESS, _Constants2.default.SEND_MESSAGE_FAILURE);
+	    this.generateActions(_Constants2.default.CHANNELS_RECEIVED, _Constants2.default.CHANNELS_FAILED, _Constants2.default.MESSAGE_RECEIVED, _Constants2.default.MESSAGE_FAILED, _Constants2.default.MESSAGES_RECEIVED, _Constants2.default.MESSAGES_FAILED, _Constants2.default.MESSAGES_LOADING, _Constants2.default.SELECTED_CHANNEL, _Constants2.default.SEND_MESSAGE_SUCCESS, _Constants2.default.SEND_MESSAGE_FAILURE);
 	  }
 	
 	  /**
@@ -74054,6 +74065,8 @@
 	exports.default = {
 	  CHANNELS_RECEIVED: 'channelsReceived',
 	  CHANNELS_FAILED: 'channelsFailed',
+	  MESSAGE_RECEIVED: 'messageReceived',
+	  MESSAGE_FAILED: 'messageFailed',
 	  MESSAGES_RECEIVED: 'messagesReceived',
 	  MESSAGES_FAILED: 'messagesFailed',
 	  SELECTED_CHANNEL: 'selectedChannel',
@@ -74218,6 +74231,10 @@
 	
 	var _Message2 = _interopRequireDefault(_Message);
 	
+	var _User = __webpack_require__(/*! ../models/User */ 425);
+	
+	var _User2 = _interopRequireDefault(_User);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -74257,7 +74274,7 @@
 	 * @class
 	 * @mixes StoreModel
 	 */
-	var MessagesStore = (_dec = (0, _decorators.datasource)(_MessagesSource2.default), _dec2 = (0, _decorators.decorate)(_alt2.default), _dec3 = (0, _decorators.bind)(_Actions2.default.login), _dec4 = (0, _decorators.bind)(_Actions2.default[_Constants2.default.MESSAGES_LOADING]), _dec5 = (0, _decorators.bind)(_Actions2.default[_Constants2.default.MESSAGES_RECEIVED]), _dec6 = (0, _decorators.bind)(_Actions2.default[_Constants2.default.SELECTED_CHANNEL]), _dec7 = (0, _decorators.bind)(_Actions2.default.sendMessage), _dec8 = (0, _decorators.bind)(_Actions2.default[_Constants2.default.SEND_MESSAGE_SUCCESS]), _dec(_class = _dec2(_class = (_class2 = function () {
+	var MessagesStore = (_dec = (0, _decorators.datasource)(_MessagesSource2.default), _dec2 = (0, _decorators.decorate)(_alt2.default), _dec3 = (0, _decorators.bind)(_Actions2.default.login), _dec4 = (0, _decorators.bind)(_Actions2.default[_Constants2.default.MESSAGES_LOADING]), _dec5 = (0, _decorators.bind)(_Actions2.default[_Constants2.default.MESSAGES_RECEIVED]), _dec6 = (0, _decorators.bind)(_Actions2.default[_Constants2.default.SELECTED_CHANNEL]), _dec7 = (0, _decorators.bind)(_Actions2.default.sendMessage), _dec8 = (0, _decorators.bind)(_Actions2.default[_Constants2.default.MESSAGE_RECEIVED]), _dec(_class = _dec2(_class = (_class2 = function () {
 	  function MessagesStore() {
 	    _classCallCheck(this, MessagesStore);
 	
@@ -74265,7 +74282,7 @@
 	      messages: [],
 	      selectedChannel: null,
 	      messagesLoading: true,
-	      user: null
+	      user: new _User2.default()
 	    };
 	  }
 	
@@ -74325,9 +74342,9 @@
 	      }, 0);
 	    }
 	  }, {
-	    key: 'messageSent',
-	    value: function messageSent(message) {
-	      var messages = [].concat(_toConsumableArray(this.state.messages), [message]);
+	    key: 'messageReceived',
+	    value: function messageReceived(message) {
+	      var messages = [].concat(_toConsumableArray(this.state.messages), [new _Message2.default(message)]);
 	
 	      this.setState({
 	        messages: messages
@@ -74336,7 +74353,7 @@
 	  }]);
 	
 	  return MessagesStore;
-	}(), (_applyDecoratedDescriptor(_class2.prototype, 'login', [_dec3], Object.getOwnPropertyDescriptor(_class2.prototype, 'login'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'messagesLoading', [_dec4], Object.getOwnPropertyDescriptor(_class2.prototype, 'messagesLoading'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'receivedMessages', [_dec5], Object.getOwnPropertyDescriptor(_class2.prototype, 'receivedMessages'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'selectedChannel', [_dec6], Object.getOwnPropertyDescriptor(_class2.prototype, 'selectedChannel'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'sendMessage', [_dec7], Object.getOwnPropertyDescriptor(_class2.prototype, 'sendMessage'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'messageSent', [_dec8], Object.getOwnPropertyDescriptor(_class2.prototype, 'messageSent'), _class2.prototype)), _class2)) || _class) || _class);
+	}(), (_applyDecoratedDescriptor(_class2.prototype, 'login', [_dec3], Object.getOwnPropertyDescriptor(_class2.prototype, 'login'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'messagesLoading', [_dec4], Object.getOwnPropertyDescriptor(_class2.prototype, 'messagesLoading'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'receivedMessages', [_dec5], Object.getOwnPropertyDescriptor(_class2.prototype, 'receivedMessages'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'selectedChannel', [_dec6], Object.getOwnPropertyDescriptor(_class2.prototype, 'selectedChannel'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'sendMessage', [_dec7], Object.getOwnPropertyDescriptor(_class2.prototype, 'sendMessage'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'messageReceived', [_dec8], Object.getOwnPropertyDescriptor(_class2.prototype, 'messageReceived'), _class2.prototype)), _class2)) || _class) || _class);
 	exports.default = _alt2.default.createStore(MessagesStore);
 
 /***/ },
@@ -74433,6 +74450,15 @@
 	        firebaseRef.once('value', function (snapshot) {
 	          var messages = snapshot.val();
 	          resolve(messages);
+	        });
+	
+	        // For new messages
+	        firebaseRef.on('child_added', function (msg) {
+	          var msgVal = msg.val();
+	          msgVal.key = msg.key();
+	
+	          // fire messageReceived action
+	          _Actions2.default[_Constants2.default.MESSAGE_RECEIVED](msgVal);
 	        });
 	      });
 	    },
@@ -75493,6 +75519,40 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
+
+/***/ },
+/* 425 */
+/*!****************************!*\
+  !*** ./src/models/User.js ***!
+  \****************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var User = function User() {
+	  var initData = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	  _classCallCheck(this, User);
+	
+	  this.uid = 0;
+	
+	  this.google = {
+	    displayName: 'Noname',
+	    profileImageURL: ''
+	  };
+	
+	  if (initData) {
+	    Object.assign(this, initData);
+	  }
+	};
+	
+	exports.default = User;
 
 /***/ }
 /******/ ]);

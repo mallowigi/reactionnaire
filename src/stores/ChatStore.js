@@ -1,6 +1,7 @@
 import alt from '../alt';
 import Actions from '../actions/Actions';
 import {decorate, bind, datasource} from 'alt-utils/lib/decorators';
+import User from '../models/User';
 
 /**
  * @class
@@ -11,7 +12,7 @@ class ChatStore {
 
   constructor () {
     this.state = {
-      user: null
+      user: new User()
     };
   }
 

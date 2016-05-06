@@ -34,14 +34,17 @@ class MessageList extends React.Component {
     let messageNodes = null;
 
     if (!this.props.messagesLoading) {
-      messageNodes = _.map(this.props.messages, ((message, key) => {
-        return (
-          <Message key={message.key} message={message}></Message>
-        );
-      }));
+      messageNodes = _.chain(this.props.messages)
+        .orderBy('date', 'desc')
+        .map((message, key) => {
+          return (
+            <Message key={message.key} message={message}></Message>
+          );
+        })
+        .value();
     } else {
       messageNodes = <CircularProgress mode="indeterminate"
-        style={{
+                                       style={{
           paddingTop: 20,
           paddingBottom: 20,
           margin: '0 auto',
@@ -52,7 +55,7 @@ class MessageList extends React.Component {
     }
 
     return (
-      <Card style={{ flex: 2, marginLeft: 10 }}>
+      <Card style={{ flex: 2, marginLeft: 10, overflow:'auto' }}>
         <List>{messageNodes}</List>
       </Card>
     )

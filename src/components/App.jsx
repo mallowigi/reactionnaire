@@ -59,12 +59,12 @@ class App extends React.Component {
     var view = <Login/>;
 
     // Logged in
-    if (!this.props.user) {
+    if (this.props.user) {
       view = (
         <main>
           <AppBar title="Chat with friends"></AppBar>
 
-          <section id="app">
+          <section id="app" style={{maxHeight: '60vh'}}>
             <ChannelList></ChannelList>
             <MessageList></MessageList>
           </section>

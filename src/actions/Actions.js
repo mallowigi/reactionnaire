@@ -10,6 +10,8 @@ class Actions {
     this.generateActions(
       Constants.CHANNELS_RECEIVED,
       Constants.CHANNELS_FAILED,
+      Constants.MESSAGE_RECEIVED,
+      Constants.MESSAGE_FAILED,
       Constants.MESSAGES_RECEIVED,
       Constants.MESSAGES_FAILED,
       Constants.MESSAGES_LOADING,

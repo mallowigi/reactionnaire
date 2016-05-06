@@ -11,7 +11,7 @@ class Message extends React.Component {
   render () {
     var message = this.props.message;
     let secondaryText = (
-      <div style={{overflow: 'auto', height: 'auto'}}>
+      <div style={{height: 'auto'}}>
         <span style={{color: 'black'}}>{message.author}</span><br/>
         <small>{message.date}</small>
       </div>

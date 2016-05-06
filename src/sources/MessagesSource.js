@@ -37,6 +37,15 @@ let MessagesSource = {
           let messages = snapshot.val();
           resolve(messages);
         });
+
+        // For new messages
+        firebaseRef.on('child_added', (msg) => {
+          let msgVal = msg.val();
+          msgVal.key = msg.key();
+
+          // fire messageReceived action
+          Actions[Constants.MESSAGE_RECEIVED](msgVal);
+        })
       });
     },
 
