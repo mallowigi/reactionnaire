@@ -9,18 +9,19 @@ import Login from './login/Login.jsx';
 
 import appTheme from '../config/appTheme';
 
-const ThemeManager = mui.Styles.ThemeManager;
-const AppBar = mui.AppBar;
-
 import connectToStores from 'alt-utils/lib/connectToStores';
 import ChatStore from '../stores/ChatStore';
+
+
+const ThemeManager = mui.Styles.ThemeManager;
+const AppBar = mui.AppBar;
 
 @connectToStores
 class App extends React.Component {
   constructor () {
     super();
   }
-N
+
   /**
    * The list of stores that the connectToStores will connect to
    * @returns {*[]}
@@ -67,7 +68,7 @@ N
             <MessageList></MessageList>
           </section>
 
-          <section>
+          <section id="messageBox">
             <MessageBox></MessageBox>
           </section>
         </main>

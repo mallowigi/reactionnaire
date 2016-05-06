@@ -1,5 +1,5 @@
 import alt from '../alt';
-import Actions from '../actions';
+import Actions from '../actions/Actions';
 import {decorate, bind, datasource} from 'alt-utils/lib/decorators';
 
 /**

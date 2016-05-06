@@ -20605,6 +20605,12 @@
 	    return _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this));
 	  }
 	
+	  /**
+	   * The list of stores that the connectToStores will connect to
+	   * @returns {*[]}
+	   */
+	
+	
 	  _createClass(App, [{
 	    key: 'getChildContext',
 	
@@ -20637,7 +20643,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'section',
-	            null,
+	            { id: 'messageBox' },
 	            _react2.default.createElement(_MessageBox2.default, null)
 	          )
 	        );
@@ -20647,11 +20653,6 @@
 	    }
 	  }], [{
 	    key: 'getStores',
-	
-	    /**
-	     * The list of stores that the connectToStores will connect to
-	     * @returns {*[]}
-	     */
 	    value: function getStores() {
 	      return [_ChatStore2.default];
 	    }
@@ -55481,10 +55482,7 @@
 	
 	      return _react2.default.createElement(
 	        Card,
-	        { style: {
-	            flex: 2,
-	            marginLeft: 10
-	          } },
+	        { style: { flex: 2, marginLeft: 10 } },
 	        _react2.default.createElement(
 	          List,
 	          null,
@@ -55555,11 +55553,13 @@
 	  _createClass(Message, [{
 	    key: 'render',
 	    value: function render() {
-	      var avatar = _react2.default.createElement(Avatar, { src: this.props.message.profile_pic });
+	      var message = this.props.message;
+	
+	      var avatar = _react2.default.createElement(Avatar, { src: message.profile_pic });
 	      return _react2.default.createElement(
 	        ListItem,
 	        { leftAvatar: avatar },
-	        this.props.message.message
+	        message.message
 	      );
 	    }
 	  }]);
@@ -71822,9 +71822,9 @@
 	
 	var _alt2 = _interopRequireDefault(_alt);
 	
-	var _actions = __webpack_require__(/*! ../actions */ 405);
+	var _Actions = __webpack_require__(/*! ../actions/Actions */ 424);
 	
-	var _actions2 = _interopRequireDefault(_actions);
+	var _Actions2 = _interopRequireDefault(_Actions);
 	
 	var _decorators = __webpack_require__(/*! alt-utils/lib/decorators */ 409);
 	
@@ -71865,7 +71865,7 @@
 	 * @class
 	 * @mixes StoreModel
 	 */
-	var ChatStore = (_dec = (0, _decorators.decorate)(_alt2.default), _dec2 = (0, _decorators.bind)(_actions2.default.login), _dec(_class = (_class2 = function () {
+	var ChatStore = (_dec = (0, _decorators.decorate)(_alt2.default), _dec2 = (0, _decorators.bind)(_Actions2.default.login), _dec(_class = (_class2 = function () {
 	  function ChatStore() {
 	    _classCallCheck(this, ChatStore);
 	
@@ -73641,76 +73641,7 @@
 
 
 /***/ },
-/* 405 */
-/*!******************************!*\
-  !*** ./src/actions/index.js ***!
-  \******************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _alt = __webpack_require__(/*! ../alt */ 391);
-	
-	var _alt2 = _interopRequireDefault(_alt);
-	
-	var _firebase = __webpack_require__(/*! firebase */ 406);
-	
-	var _firebase2 = _interopRequireDefault(_firebase);
-	
-	var _firebaseRefs = __webpack_require__(/*! ../config/firebaseRefs */ 407);
-	
-	var _firebaseRefs2 = _interopRequireDefault(_firebaseRefs);
-	
-	var _constants = __webpack_require__(/*! ../constants */ 408);
-	
-	var _constants2 = _interopRequireDefault(_constants);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var Actions = function () {
-	  function Actions() {
-	    _classCallCheck(this, Actions);
-	
-	    this.generateActions(_constants2.default.CHANNELS_RECEIVED, _constants2.default.CHANNELS_FAILED, _constants2.default.MESSAGES_RECEIVED, _constants2.default.MESSAGES_FAILED, _constants2.default.MESSAGES_LOADING, _constants2.default.SELECTED_CHANNEL);
-	  }
-	
-	  /**
-	   * Log the user
-	   * @param args
-	   * @returns {function(dispatcher)}
-	   */
-	
-	
-	  _createClass(Actions, [{
-	    key: 'login',
-	    value: function login() {
-	      var args = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      return function (dispatch) {
-	        var firebaseRef = new _firebase2.default(_firebaseRefs2.default.socket);
-	        firebaseRef.authWithOAuthPopup("google").then(function (user) {
-	          dispatch(user);
-	        }).catch(function (err) {
-	          console.error(err);
-	        });
-	      };
-	    }
-	  }]);
-	
-	  return Actions;
-	}();
-	
-	exports.default = _alt2.default.createActions(Actions);
-
-/***/ },
+/* 405 */,
 /* 406 */
 /*!****************************************!*\
   !*** ./~/firebase/lib/firebase-web.js ***!
@@ -74019,27 +73950,7 @@
 	};
 
 /***/ },
-/* 408 */
-/*!********************************!*\
-  !*** ./src/constants/index.js ***!
-  \********************************/
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = {
-	  CHANNELS_RECEIVED: 'channelsReceived',
-	  CHANNELS_FAILED: 'channelsFailed',
-	  MESSAGES_RECEIVED: 'messagesReceived',
-	  MESSAGES_FAILED: 'messagesFailed',
-	  SELECTED_CHANNEL: 'selectedChannel',
-	  MESSAGES_LOADING: 'messagesLoading'
-	};
-
-/***/ },
+/* 408 */,
 /* 409 */
 /*!***************************************!*\
   !*** ./~/alt-utils/lib/decorators.js ***!
@@ -74173,15 +74084,15 @@
 	
 	var _alt2 = _interopRequireDefault(_alt);
 	
-	var _actions = __webpack_require__(/*! ../actions */ 405);
+	var _Actions = __webpack_require__(/*! ../actions/Actions */ 424);
 	
-	var _actions2 = _interopRequireDefault(_actions);
+	var _Actions2 = _interopRequireDefault(_Actions);
 	
 	var _decorators = __webpack_require__(/*! alt-utils/lib/decorators */ 409);
 	
-	var _index = __webpack_require__(/*! ../constants/index */ 408);
+	var _Constants = __webpack_require__(/*! ../constants/Constants */ 425);
 	
-	var _index2 = _interopRequireDefault(_index);
+	var _Constants2 = _interopRequireDefault(_Constants);
 	
 	var _lodashMixins = __webpack_require__(/*! ../config/lodashMixins */ 411);
 	
@@ -74228,7 +74139,7 @@
 	 * @class
 	 * @mixes StoreModel
 	 */
-	var MessagesStore = (_dec = (0, _decorators.datasource)(_MessagesSource2.default), _dec2 = (0, _decorators.decorate)(_alt2.default), _dec3 = (0, _decorators.bind)(_actions2.default[_index2.default.MESSAGES_LOADING]), _dec4 = (0, _decorators.bind)(_actions2.default[_index2.default.MESSAGES_RECEIVED]), _dec5 = (0, _decorators.bind)(_actions2.default[_index2.default.SELECTED_CHANNEL]), _dec(_class = _dec2(_class = (_class2 = function () {
+	var MessagesStore = (_dec = (0, _decorators.datasource)(_MessagesSource2.default), _dec2 = (0, _decorators.decorate)(_alt2.default), _dec3 = (0, _decorators.bind)(_Actions2.default[_Constants2.default.MESSAGES_LOADING]), _dec4 = (0, _decorators.bind)(_Actions2.default[_Constants2.default.MESSAGES_RECEIVED]), _dec5 = (0, _decorators.bind)(_Actions2.default[_Constants2.default.SELECTED_CHANNEL]), _dec(_class = _dec2(_class = (_class2 = function () {
 	  function MessagesStore() {
 	    _classCallCheck(this, MessagesStore);
 	
@@ -74317,9 +74228,9 @@
 	  value: true
 	});
 	
-	var _actions = __webpack_require__(/*! ../actions */ 405);
+	var _Actions = __webpack_require__(/*! ../actions/Actions */ 424);
 	
-	var _actions2 = _interopRequireDefault(_actions);
+	var _Actions2 = _interopRequireDefault(_Actions);
 	
 	var _firebase = __webpack_require__(/*! firebase */ 406);
 	
@@ -74329,15 +74240,14 @@
 	
 	var _firebaseRefs2 = _interopRequireDefault(_firebaseRefs);
 	
-	var _index = __webpack_require__(/*! ../constants/index */ 408);
+	var _Constants = __webpack_require__(/*! ../constants/Constants */ 425);
 	
-	var _index2 = _interopRequireDefault(_index);
+	var _Constants2 = _interopRequireDefault(_Constants);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	/**
 	 * Define the sources for getting messages
-	 * @type {{getChannels: {}}}
 	 */
 	var MessagesSource = {
 	  /**
@@ -74364,9 +74274,9 @@
 	
 	
 	    // Defines the actions to send when success/error (mandatory)
-	    success: _actions2.default[_index2.default.MESSAGES_RECEIVED],
-	    error: _actions2.default[_index2.default.MESSAGES_FAILED],
-	    loading: _actions2.default[_index2.default.MESSAGES_LOADING]
+	    success: _Actions2.default[_Constants2.default.MESSAGES_RECEIVED],
+	    error: _Actions2.default[_Constants2.default.MESSAGES_FAILED],
+	    loading: _Actions2.default[_Constants2.default.MESSAGES_LOADING]
 	  }
 	};
 	
@@ -74464,9 +74374,7 @@
 	
 	      return _react2.default.createElement(
 	        Card,
-	        { style: {
-	            flex: 1
-	          } },
+	        { style: { flex: 1 } },
 	        _react2.default.createElement(
 	          List,
 	          null,
@@ -74514,13 +74422,13 @@
 	
 	var _materialUi2 = _interopRequireDefault(_materialUi);
 	
-	var _actions = __webpack_require__(/*! ../../actions */ 405);
+	var _Actions = __webpack_require__(/*! ../../actions/Actions */ 424);
 	
-	var _actions2 = _interopRequireDefault(_actions);
+	var _Actions2 = _interopRequireDefault(_Actions);
 	
-	var _index = __webpack_require__(/*! ../../constants/index */ 408);
+	var _Constants = __webpack_require__(/*! ../../constants/Constants */ 425);
 	
-	var _index2 = _interopRequireDefault(_index);
+	var _Constants2 = _interopRequireDefault(_Constants);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -74541,7 +74449,7 @@
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Channel).call(this, props));
 	
 	    _this.onClick = function (evt) {
-	      _actions2.default[_index2.default.SELECTED_CHANNEL](_this.props.channel);
+	      _Actions2.default[_Constants2.default.SELECTED_CHANNEL](_this.props.channel);
 	    };
 	
 	    return _this;
@@ -74558,8 +74466,7 @@
 	      return _react2.default.createElement(
 	        ListItem,
 	        { style: style, key: this.props.channel.key,
-	          onClick: this.onClick
-	        },
+	          onClick: this.onClick },
 	        '#',
 	        this.props.channel.name
 	      );
@@ -74592,9 +74499,9 @@
 	
 	var _alt2 = _interopRequireDefault(_alt);
 	
-	var _actions = __webpack_require__(/*! ../actions */ 405);
+	var _Actions = __webpack_require__(/*! ../actions/Actions */ 424);
 	
-	var _actions2 = _interopRequireDefault(_actions);
+	var _Actions2 = _interopRequireDefault(_Actions);
 	
 	var _decorators = __webpack_require__(/*! alt-utils/lib/decorators */ 409);
 	
@@ -74602,9 +74509,9 @@
 	
 	var _ChannelSource2 = _interopRequireDefault(_ChannelSource);
 	
-	var _index = __webpack_require__(/*! ../constants/index */ 408);
+	var _Constants = __webpack_require__(/*! ../constants/Constants */ 425);
 	
-	var _index2 = _interopRequireDefault(_index);
+	var _Constants2 = _interopRequireDefault(_Constants);
 	
 	var _lodashMixins = __webpack_require__(/*! ../config/lodashMixins */ 411);
 	
@@ -74647,7 +74554,7 @@
 	 * @class
 	 * @mixes StoreModel
 	 */
-	var ChannelsStore = (_dec = (0, _decorators.datasource)(_ChannelSource2.default), _dec2 = (0, _decorators.decorate)(_alt2.default), _dec3 = (0, _decorators.bind)(_actions2.default[_index2.default.CHANNELS_RECEIVED]), _dec4 = (0, _decorators.bind)(_actions2.default[_index2.default.SELECTED_CHANNEL]), _dec(_class = _dec2(_class = (_class2 = function () {
+	var ChannelsStore = (_dec = (0, _decorators.datasource)(_ChannelSource2.default), _dec2 = (0, _decorators.decorate)(_alt2.default), _dec3 = (0, _decorators.bind)(_Actions2.default[_Constants2.default.CHANNELS_RECEIVED]), _dec4 = (0, _decorators.bind)(_Actions2.default[_Constants2.default.SELECTED_CHANNEL]), _dec(_class = _dec2(_class = (_class2 = function () {
 	  function ChannelsStore() {
 	    _classCallCheck(this, ChannelsStore);
 	
@@ -74676,7 +74583,7 @@
 	      });
 	
 	      // Dispatch an action that the selected channel has been changed
-	      _actions2.default[_index2.default.SELECTED_CHANNEL].defer(selectedChannel);
+	      _Actions2.default[_Constants2.default.SELECTED_CHANNEL].defer(selectedChannel);
 	    }
 	  }, {
 	    key: 'selectedChannel',
@@ -74711,9 +74618,9 @@
 	  value: true
 	});
 	
-	var _actions = __webpack_require__(/*! ../actions */ 405);
+	var _Actions = __webpack_require__(/*! ../actions/Actions */ 424);
 	
-	var _actions2 = _interopRequireDefault(_actions);
+	var _Actions2 = _interopRequireDefault(_Actions);
 	
 	var _firebase = __webpack_require__(/*! firebase */ 406);
 	
@@ -74723,9 +74630,9 @@
 	
 	var _firebaseRefs2 = _interopRequireDefault(_firebaseRefs);
 	
-	var _index = __webpack_require__(/*! ../constants/index */ 408);
+	var _Constants = __webpack_require__(/*! ../constants/Constants */ 425);
 	
-	var _index2 = _interopRequireDefault(_index);
+	var _Constants2 = _interopRequireDefault(_Constants);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -74757,8 +74664,8 @@
 	
 	
 	    // Defines the actions to send when success/error (mandatory)
-	    success: _actions2.default[_index2.default.CHANNELS_RECEIVED],
-	    error: _actions2.default[_index2.default.CHANNELS_FAILED]
+	    success: _Actions2.default[_Constants2.default.CHANNELS_RECEIVED],
+	    error: _Actions2.default[_Constants2.default.CHANNELS_FAILED]
 	  }
 	};
 	
@@ -74888,9 +74795,9 @@
 	
 	var _materialUi2 = _interopRequireDefault(_materialUi);
 	
-	var _actions = __webpack_require__(/*! ../../actions */ 405);
+	var _Actions = __webpack_require__(/*! ../../actions/Actions */ 424);
 	
-	var _actions2 = _interopRequireDefault(_actions);
+	var _Actions2 = _interopRequireDefault(_Actions);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -74919,7 +74826,7 @@
 	    }
 	
 	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Login)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.onClick = function (evt) {
-	      _actions2.default.login();
+	      _Actions2.default.login();
 	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 	
@@ -74931,9 +74838,7 @@
 	        { className: 'login' },
 	        _react2.default.createElement(
 	          CardText,
-	          { style: {
-	              textAlign: 'center'
-	            } },
+	          { style: { textAlign: 'center' } },
 	          'To start chatting please log in with your google account'
 	        ),
 	        _react2.default.createElement(RaisedButton, { style: { display: 'block' },
@@ -75358,6 +75263,97 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
+
+/***/ },
+/* 424 */
+/*!********************************!*\
+  !*** ./src/actions/Actions.js ***!
+  \********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _alt = __webpack_require__(/*! ../alt */ 391);
+	
+	var _alt2 = _interopRequireDefault(_alt);
+	
+	var _firebase = __webpack_require__(/*! firebase */ 406);
+	
+	var _firebase2 = _interopRequireDefault(_firebase);
+	
+	var _firebaseRefs = __webpack_require__(/*! ../config/firebaseRefs */ 407);
+	
+	var _firebaseRefs2 = _interopRequireDefault(_firebaseRefs);
+	
+	var _Constants = __webpack_require__(/*! ../constants/Constants */ 425);
+	
+	var _Constants2 = _interopRequireDefault(_Constants);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Actions = function () {
+	  function Actions() {
+	    _classCallCheck(this, Actions);
+	
+	    this.generateActions(_Constants2.default.CHANNELS_RECEIVED, _Constants2.default.CHANNELS_FAILED, _Constants2.default.MESSAGES_RECEIVED, _Constants2.default.MESSAGES_FAILED, _Constants2.default.MESSAGES_LOADING, _Constants2.default.SELECTED_CHANNEL, _Constants2.default.SEND_MESSAGE, _Constants2.default.SEND_MESSAGE_SUCCESS, _Constants2.default.SEND_MESSAGE_ERROR);
+	  }
+	
+	  /**
+	   * Log the user
+	   * @param args
+	   * @returns {function(dispatcher)}
+	   */
+	
+	
+	  _createClass(Actions, [{
+	    key: 'login',
+	    value: function login() {
+	      var args = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      return function (dispatch) {
+	        var firebaseRef = new _firebase2.default(_firebaseRefs2.default.socket);
+	        firebaseRef.authWithOAuthPopup("google").then(function (user) {
+	          dispatch(user);
+	        }).catch(function (err) {
+	          console.error(err);
+	        });
+	      };
+	    }
+	  }]);
+	
+	  return Actions;
+	}();
+	
+	exports.default = _alt2.default.createActions(Actions);
+
+/***/ },
+/* 425 */
+/*!************************************!*\
+  !*** ./src/constants/Constants.js ***!
+  \************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  CHANNELS_RECEIVED: 'channelsReceived',
+	  CHANNELS_FAILED: 'channelsFailed',
+	  MESSAGES_RECEIVED: 'messagesReceived',
+	  MESSAGES_FAILED: 'messagesFailed',
+	  SELECTED_CHANNEL: 'selectedChannel',
+	  MESSAGES_LOADING: 'messagesLoading'
+	};
 
 /***/ }
 /******/ ]);

@@ -48,9 +48,7 @@ class ChannelList extends React.Component {
     });
 
     return (
-      <Card style={{
-        flex: 1
-      }}>
+      <Card style={{ flex: 1 }}>
         <List>{channelNodes}</List>
       </Card>
     )

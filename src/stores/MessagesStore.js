@@ -1,7 +1,7 @@
 import alt from '../alt';
-import Actions from '../actions';
+import Actions from '../actions/Actions';
 import {decorate, bind, datasource} from 'alt-utils/lib/decorators';
-import Constants from '../constants/index';
+import Constants from '../constants/Constants';
 import _ from '../config/lodashMixins';
 import MessagesSource from '../sources/MessagesSource';
 

@@ -1,12 +1,11 @@
-import Actions from '../actions';
+import Actions from '../actions/Actions';
 import Firebase from 'firebase';
 
 import firebaseRefs from '../config/firebaseRefs';
-import Constants from '../constants/index';
+import Constants from '../constants/Constants';
 
 /**
  * Define the sources for getting messages
- * @type {{getChannels: {}}}
  */
 let MessagesSource = {
   /**

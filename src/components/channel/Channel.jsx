@@ -1,8 +1,8 @@
 import React from 'react';
 import mui from 'material-ui';
 
-import Actions from '../../actions';
-import Constants from '../../constants/index';
+import Actions from '../../actions/Actions';
+import Constants from '../../constants/Constants';
 
 const {ListItem} = mui;
 
@@ -23,9 +23,8 @@ class Channel extends React.Component {
 
     return (
       <ListItem style={style} key={this.props.channel.key}
-                onClick={this.onClick}
-      >
-        #{this.props.channel.name}
+                onClick={this.onClick}>
+      #{this.props.channel.name}
       </ListItem>
     );
   }

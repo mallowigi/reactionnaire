@@ -2,7 +2,7 @@ import alt from '../alt';
 import Firebase from 'firebase';
 import firebaseRefs from '../config/firebaseRefs';
 
-import Constants from '../constants';
+import Constants from '../constants/Constants';
 
 class Actions {
 
@@ -14,6 +14,9 @@ class Actions {
       Constants.MESSAGES_FAILED,
       Constants.MESSAGES_LOADING,
       Constants.SELECTED_CHANNEL,
+      Constants.SEND_MESSAGE,
+      Constants.SEND_MESSAGE_SUCCESS,
+      Constants.SEND_MESSAGE_ERROR
     )
   }
 
