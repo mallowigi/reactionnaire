@@ -33,12 +33,22 @@ class MessageList extends React.Component {
   render () {
     let messageNodes = null;
 
-    if (this.props.messages) {
+    if (!this.props.messagesLoading) {
       messageNodes = _.map(this.props.messages, ((message, key) => {
         return (
           <Message key={message.key} message={message}></Message>
         );
       }));
+    } else {
+      messageNodes = <CircularProgress mode="indeterminate"
+        style={{
+          paddingTop: 20,
+          paddingBottom: 20,
+          margin: '0 auto',
+          display: 'block',
+          width: '60px'
+        }}>
+      </CircularProgress>
     }
 
     return (

@@ -16,8 +16,16 @@ class MessagesStore {
   constructor () {
     this.state = {
       messages: [],
-      selectedChannel: null
+      selectedChannel: null,
+      messagesLoading: true
     };
+  }
+
+  @bind(Actions[Constants.MESSAGES_LOADING])
+  messagesLoading () {
+    this.setState({
+      messagesLoading: true
+    })
   }
 
   @bind(Actions[Constants.MESSAGES_RECEIVED])
@@ -25,7 +33,8 @@ class MessagesStore {
     messages = _.toMap(messages);
     
     this.setState({
-      messages
+      messages,
+      messagesLoading: false
     })
   }
   
@@ -36,7 +45,7 @@ class MessagesStore {
     });
 
     // Once we get the selected channel, we can call getMessages
-    this.getInstance().getMessages();
+    setTimeout(() => (this.getInstance().getMessages()), 0);
   }
 }
 

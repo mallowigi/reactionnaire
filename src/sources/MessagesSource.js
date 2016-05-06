@@ -32,7 +32,8 @@ let MessagesSource = {
 
     // Defines the actions to send when success/error (mandatory)
     success: Actions[Constants.MESSAGES_RECEIVED],
-    error: Actions[Constants.MESSAGES_FAILED]
+    error: Actions[Constants.MESSAGES_FAILED],
+    loading: Actions[Constants.MESSAGES_LOADING]
   }
 };
 

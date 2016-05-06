@@ -12,7 +12,8 @@ class Actions {
       Constants.CHANNELS_FAILED,
       Constants.MESSAGES_RECEIVED,
       Constants.MESSAGES_FAILED,
-      Constants.SELECTED_CHANNEL
+      Constants.MESSAGES_LOADING,
+      Constants.SELECTED_CHANNEL,
     )
   }
 
