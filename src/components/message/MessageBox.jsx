@@ -4,6 +4,7 @@ import Firebase from 'firebase';
 import _ from 'lodash';
 
 import firebaseRefs from '../../config/firebaseRefs';
+import Actions from '../../actions/Actions';
 
 const {ListItem, Card} = mui;
 
@@ -14,8 +15,6 @@ class MessageBox extends React.Component {
     this.state = {
       message: ''
     };
-
-    this.firebaseRef = new Firebase(firebaseRefs.messages);
   }
 
   static propTypes = {
@@ -30,13 +29,11 @@ class MessageBox extends React.Component {
     if (evt.keyCode === 13 && _.trim(evt.target.value)) {
       evt.preventDefault();
 
-      this.firebaseRef.push({
-        message: this.state.message
-      });
+      // Dispatch sendMessage
+      Actions.sendMessage({message: this.state.message});
 
-      this.setState({
-        message: ''
-      });
+      //  Reset textarea
+      this.setState({message: ''});
     }
   };
 

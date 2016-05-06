@@ -14,9 +14,8 @@ class Actions {
       Constants.MESSAGES_FAILED,
       Constants.MESSAGES_LOADING,
       Constants.SELECTED_CHANNEL,
-      Constants.SEND_MESSAGE,
       Constants.SEND_MESSAGE_SUCCESS,
-      Constants.SEND_MESSAGE_ERROR
+      Constants.SEND_MESSAGE_FAILURE
     )
   }
 
@@ -25,7 +24,7 @@ class Actions {
    * @param args
    * @returns {function(dispatcher)}
    */
-  login (args = {}) {
+  login () {
     return (dispatch) => {
       let firebaseRef = new Firebase(firebaseRefs.socket);
       firebaseRef.authWithOAuthPopup("google")
@@ -35,6 +34,17 @@ class Actions {
         .catch(err => {
           console.error(err);
         });
+    }
+  }
+
+  /**
+   * Send a message action
+   * @param args
+   * @returns {function()}
+   */
+  sendMessage ({message = ''}) {
+    return (dispatch) => {
+      dispatch(message);
     }
   }
 }

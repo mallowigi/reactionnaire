@@ -4,5 +4,7 @@ export default {
   MESSAGES_RECEIVED: 'messagesReceived',
   MESSAGES_FAILED: 'messagesFailed',
   SELECTED_CHANNEL: 'selectedChannel',
-  MESSAGES_LOADING: 'messagesLoading'
+  MESSAGES_LOADING: 'messagesLoading',
+  SEND_MESSAGE_SUCCESS: 'sendMessagesSuccess',
+  SEND_MESSAGE_FAILURE: 'sendMessagesFailure'
 }

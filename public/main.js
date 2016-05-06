@@ -77,7 +77,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	__webpack_require__(/*! ./main.styl */ 420);
+	__webpack_require__(/*! ./main.styl */ 421);
 	
 	_reactDom2.default.render(_react2.default.createElement(_App2.default, null), window.container);
 	// Firebase.goOffline();
@@ -20561,19 +20561,19 @@
 	
 	var _MessageList2 = _interopRequireDefault(_MessageList);
 	
-	var _ChannelList = __webpack_require__(/*! ./channel/ChannelList.jsx */ 413);
+	var _ChannelList = __webpack_require__(/*! ./channel/ChannelList.jsx */ 414);
 	
 	var _ChannelList2 = _interopRequireDefault(_ChannelList);
 	
-	var _MessageBox = __webpack_require__(/*! ./message/MessageBox.jsx */ 417);
+	var _MessageBox = __webpack_require__(/*! ./message/MessageBox.jsx */ 418);
 	
 	var _MessageBox2 = _interopRequireDefault(_MessageBox);
 	
-	var _Login = __webpack_require__(/*! ./login/Login.jsx */ 418);
+	var _Login = __webpack_require__(/*! ./login/Login.jsx */ 419);
 	
 	var _Login2 = _interopRequireDefault(_Login);
 	
-	var _appTheme = __webpack_require__(/*! ../config/appTheme */ 419);
+	var _appTheme = __webpack_require__(/*! ../config/appTheme */ 420);
 	
 	var _appTheme2 = _interopRequireDefault(_appTheme);
 	
@@ -20630,7 +20630,7 @@
 	      var view = _react2.default.createElement(_Login2.default, null);
 	
 	      // Logged in
-	      if (!this.props.user) {
+	      if (this.props.user) {
 	        view = _react2.default.createElement(
 	          'main',
 	          null,
@@ -71822,7 +71822,7 @@
 	
 	var _alt2 = _interopRequireDefault(_alt);
 	
-	var _Actions = __webpack_require__(/*! ../actions/Actions */ 424);
+	var _Actions = __webpack_require__(/*! ../actions/Actions */ 405);
 	
 	var _Actions2 = _interopRequireDefault(_Actions);
 	
@@ -73641,7 +73641,91 @@
 
 
 /***/ },
-/* 405 */,
+/* 405 */
+/*!********************************!*\
+  !*** ./src/actions/Actions.js ***!
+  \********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _alt = __webpack_require__(/*! ../alt */ 391);
+	
+	var _alt2 = _interopRequireDefault(_alt);
+	
+	var _firebase = __webpack_require__(/*! firebase */ 406);
+	
+	var _firebase2 = _interopRequireDefault(_firebase);
+	
+	var _firebaseRefs = __webpack_require__(/*! ../config/firebaseRefs */ 407);
+	
+	var _firebaseRefs2 = _interopRequireDefault(_firebaseRefs);
+	
+	var _Constants = __webpack_require__(/*! ../constants/Constants */ 408);
+	
+	var _Constants2 = _interopRequireDefault(_Constants);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Actions = function () {
+	  function Actions() {
+	    _classCallCheck(this, Actions);
+	
+	    this.generateActions(_Constants2.default.CHANNELS_RECEIVED, _Constants2.default.CHANNELS_FAILED, _Constants2.default.MESSAGES_RECEIVED, _Constants2.default.MESSAGES_FAILED, _Constants2.default.MESSAGES_LOADING, _Constants2.default.SELECTED_CHANNEL, _Constants2.default.SEND_MESSAGE_SUCCESS, _Constants2.default.SEND_MESSAGE_FAILURE);
+	  }
+	
+	  /**
+	   * Log the user
+	   * @param args
+	   * @returns {function(dispatcher)}
+	   */
+	
+	
+	  _createClass(Actions, [{
+	    key: 'login',
+	    value: function login() {
+	      return function (dispatch) {
+	        var firebaseRef = new _firebase2.default(_firebaseRefs2.default.socket);
+	        firebaseRef.authWithOAuthPopup("google").then(function (user) {
+	          dispatch(user);
+	        }).catch(function (err) {
+	          console.error(err);
+	        });
+	      };
+	    }
+	
+	    /**
+	     * Send a message action
+	     * @param args
+	     * @returns {function()}
+	     */
+	
+	  }, {
+	    key: 'sendMessage',
+	    value: function sendMessage(_ref) {
+	      var _ref$message = _ref.message;
+	      var message = _ref$message === undefined ? '' : _ref$message;
+	
+	      return function (dispatch) {
+	        dispatch(message);
+	      };
+	    }
+	  }]);
+	
+	  return Actions;
+	}();
+	
+	exports.default = _alt2.default.createActions(Actions);
+
+/***/ },
 /* 406 */
 /*!****************************************!*\
   !*** ./~/firebase/lib/firebase-web.js ***!
@@ -73950,7 +74034,29 @@
 	};
 
 /***/ },
-/* 408 */,
+/* 408 */
+/*!************************************!*\
+  !*** ./src/constants/Constants.js ***!
+  \************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  CHANNELS_RECEIVED: 'channelsReceived',
+	  CHANNELS_FAILED: 'channelsFailed',
+	  MESSAGES_RECEIVED: 'messagesReceived',
+	  MESSAGES_FAILED: 'messagesFailed',
+	  SELECTED_CHANNEL: 'selectedChannel',
+	  MESSAGES_LOADING: 'messagesLoading',
+	  SEND_MESSAGE_SUCCESS: 'sendMessagesSuccess',
+	  SEND_MESSAGE_FAILURE: 'sendMessagesFailure'
+	};
+
+/***/ },
 /* 409 */
 /*!***************************************!*\
   !*** ./~/alt-utils/lib/decorators.js ***!
@@ -74078,19 +74184,19 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _dec, _dec2, _dec3, _dec4, _dec5, _class, _desc, _value, _class2;
+	var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _class, _desc, _value, _class2;
 	
 	var _alt = __webpack_require__(/*! ../alt */ 391);
 	
 	var _alt2 = _interopRequireDefault(_alt);
 	
-	var _Actions = __webpack_require__(/*! ../actions/Actions */ 424);
+	var _Actions = __webpack_require__(/*! ../actions/Actions */ 405);
 	
 	var _Actions2 = _interopRequireDefault(_Actions);
 	
 	var _decorators = __webpack_require__(/*! alt-utils/lib/decorators */ 409);
 	
-	var _Constants = __webpack_require__(/*! ../constants/Constants */ 425);
+	var _Constants = __webpack_require__(/*! ../constants/Constants */ 408);
 	
 	var _Constants2 = _interopRequireDefault(_Constants);
 	
@@ -74102,7 +74208,13 @@
 	
 	var _MessagesSource2 = _interopRequireDefault(_MessagesSource);
 	
+	var _Message = __webpack_require__(/*! ../models/Message */ 413);
+	
+	var _Message2 = _interopRequireDefault(_Message);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -74139,18 +74251,30 @@
 	 * @class
 	 * @mixes StoreModel
 	 */
-	var MessagesStore = (_dec = (0, _decorators.datasource)(_MessagesSource2.default), _dec2 = (0, _decorators.decorate)(_alt2.default), _dec3 = (0, _decorators.bind)(_Actions2.default[_Constants2.default.MESSAGES_LOADING]), _dec4 = (0, _decorators.bind)(_Actions2.default[_Constants2.default.MESSAGES_RECEIVED]), _dec5 = (0, _decorators.bind)(_Actions2.default[_Constants2.default.SELECTED_CHANNEL]), _dec(_class = _dec2(_class = (_class2 = function () {
+	var MessagesStore = (_dec = (0, _decorators.datasource)(_MessagesSource2.default), _dec2 = (0, _decorators.decorate)(_alt2.default), _dec3 = (0, _decorators.bind)(_Actions2.default.login), _dec4 = (0, _decorators.bind)(_Actions2.default[_Constants2.default.MESSAGES_LOADING]), _dec5 = (0, _decorators.bind)(_Actions2.default[_Constants2.default.MESSAGES_RECEIVED]), _dec6 = (0, _decorators.bind)(_Actions2.default[_Constants2.default.SELECTED_CHANNEL]), _dec7 = (0, _decorators.bind)(_Actions2.default.sendMessage), _dec8 = (0, _decorators.bind)(_Actions2.default[_Constants2.default.SEND_MESSAGE_SUCCESS]), _dec(_class = _dec2(_class = (_class2 = function () {
 	  function MessagesStore() {
 	    _classCallCheck(this, MessagesStore);
 	
 	    this.state = {
 	      messages: [],
 	      selectedChannel: null,
-	      messagesLoading: true
+	      messagesLoading: true,
+	      user: null
 	    };
 	  }
 	
+	  /**
+	   * Login by setting the user to the logged in user
+	   * @param user
+	   */
+	
+	
 	  _createClass(MessagesStore, [{
+	    key: 'login',
+	    value: function login(user) {
+	      this.setState({ user: user });
+	    }
+	  }, {
 	    key: 'messagesLoading',
 	    value: function messagesLoading() {
 	      this.setState({
@@ -74176,15 +74300,37 @@
 	        selectedChannel: channel
 	      });
 	
-	      // Once we get the selected channel, we can call getMessages
+	      // Once we get the selected channel, we can call getMessages (from MessagesSource)
 	      setTimeout(function () {
 	        return _this.getInstance().getMessages();
 	      }, 0);
 	    }
+	  }, {
+	    key: 'sendMessage',
+	    value: function sendMessage(message) {
+	      var _this2 = this;
+	
+	      this.setState({
+	        message: message
+	      });
+	
+	      setTimeout(function () {
+	        _this2.getInstance().sendMessage();
+	      }, 0);
+	    }
+	  }, {
+	    key: 'messageSent',
+	    value: function messageSent(message) {
+	      var messages = [].concat(_toConsumableArray(this.state.messages), [message]);
+	
+	      this.setState({
+	        messages: messages
+	      });
+	    }
 	  }]);
 	
 	  return MessagesStore;
-	}(), (_applyDecoratedDescriptor(_class2.prototype, 'messagesLoading', [_dec3], Object.getOwnPropertyDescriptor(_class2.prototype, 'messagesLoading'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'receivedMessages', [_dec4], Object.getOwnPropertyDescriptor(_class2.prototype, 'receivedMessages'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'selectedChannel', [_dec5], Object.getOwnPropertyDescriptor(_class2.prototype, 'selectedChannel'), _class2.prototype)), _class2)) || _class) || _class);
+	}(), (_applyDecoratedDescriptor(_class2.prototype, 'login', [_dec3], Object.getOwnPropertyDescriptor(_class2.prototype, 'login'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'messagesLoading', [_dec4], Object.getOwnPropertyDescriptor(_class2.prototype, 'messagesLoading'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'receivedMessages', [_dec5], Object.getOwnPropertyDescriptor(_class2.prototype, 'receivedMessages'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'selectedChannel', [_dec6], Object.getOwnPropertyDescriptor(_class2.prototype, 'selectedChannel'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'sendMessage', [_dec7], Object.getOwnPropertyDescriptor(_class2.prototype, 'sendMessage'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'messageSent', [_dec8], Object.getOwnPropertyDescriptor(_class2.prototype, 'messageSent'), _class2.prototype)), _class2)) || _class) || _class);
 	exports.default = _alt2.default.createStore(MessagesStore);
 
 /***/ },
@@ -74228,7 +74374,7 @@
 	  value: true
 	});
 	
-	var _Actions = __webpack_require__(/*! ../actions/Actions */ 424);
+	var _Actions = __webpack_require__(/*! ../actions/Actions */ 405);
 	
 	var _Actions2 = _interopRequireDefault(_Actions);
 	
@@ -74240,9 +74386,13 @@
 	
 	var _firebaseRefs2 = _interopRequireDefault(_firebaseRefs);
 	
-	var _Constants = __webpack_require__(/*! ../constants/Constants */ 425);
+	var _Constants = __webpack_require__(/*! ../constants/Constants */ 408);
 	
 	var _Constants2 = _interopRequireDefault(_Constants);
+	
+	var _Message = __webpack_require__(/*! ../models/Message */ 413);
+	
+	var _Message2 = _interopRequireDefault(_Message);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -74253,6 +74403,10 @@
 	  /**
 	   * For each source we need to define a remote method as well as success and error actions
 	   */
+	
+	  /**
+	   * Get the messages from the source
+	   */
 	  getMessages: {
 	    /**
 	     * Binds the data to the state of the store this source will be bound to
@@ -74261,9 +74415,14 @@
 	
 	    remote: function remote(state) {
 	      // All messages with a given channel
-	      var firebaseRef = new _firebase2.default(_firebaseRefs2.default.messages + ('/' + state.selectedChannel.key));
+	      var firebaseUrl = _firebaseRefs2.default.messages + ('/' + state.selectedChannel.key);
+	      var firebaseRef = new _firebase2.default(firebaseUrl);
 	
 	      return new Promise(function (resolve, reject) {
+	        if (!firebaseRef) {
+	          return reject('Unable to access firebase url' + firebaseUrl);
+	        }
+	
 	        // Get the data from firebase
 	        firebaseRef.once('value', function (snapshot) {
 	          var messages = snapshot.val();
@@ -74277,6 +74436,38 @@
 	    success: _Actions2.default[_Constants2.default.MESSAGES_RECEIVED],
 	    error: _Actions2.default[_Constants2.default.MESSAGES_FAILED],
 	    loading: _Actions2.default[_Constants2.default.MESSAGES_LOADING]
+	  },
+	
+	  /**
+	   * Add a message to the source
+	   */
+	  sendMessage: {
+	    remote: function remote(state) {
+	      var firebaseUrl = _firebaseRefs2.default.messages + ('/' + state.selectedChannel.key);
+	      var firebaseRef = new _firebase2.default(firebaseUrl);
+	
+	      return new Promise(function (resolve, reject) {
+	        if (!firebaseRef) {
+	          return reject('Unable to access firebase url' + firebaseUrl);
+	        }
+	
+	        var message = new _Message2.default({
+	          message: state.message,
+	          date: new Date().toUTCString(),
+	          author: state.user.google.displayName,
+	          userId: state.user.uid,
+	          profilePic: state.user.google.profileImageURL
+	        });
+	        // Push message to firebase, and set the message's key
+	        message.key = firebaseRef.push(message).key();
+	
+	        resolve(message);
+	      });
+	    },
+	
+	
+	    success: _Actions2.default[_Constants2.default.SEND_MESSAGE_SUCCESS],
+	    error: _Actions2.default[_Constants2.default.SEND_MESSAGE_FAILURE]
 	  }
 	};
 	
@@ -74284,6 +74475,39 @@
 
 /***/ },
 /* 413 */
+/*!*******************************!*\
+  !*** ./src/models/Message.js ***!
+  \*******************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Message = function Message() {
+	  var initData = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	  _classCallCheck(this, Message);
+	
+	  this.message = '';
+	  this.date = new Date().toUTCString();
+	  this.author = '';
+	  this.userId = '';
+	  this.profilePic = '';
+	
+	  if (initData) {
+	    Object.assign(this, initData);
+	  }
+	};
+	
+	exports.default = Message;
+
+/***/ },
+/* 414 */
 /*!************************************************!*\
   !*** ./src/components/channel/ChannelList.jsx ***!
   \************************************************/
@@ -74303,7 +74527,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Channel = __webpack_require__(/*! ./Channel.jsx */ 414);
+	var _Channel = __webpack_require__(/*! ./Channel.jsx */ 415);
 	
 	var _Channel2 = _interopRequireDefault(_Channel);
 	
@@ -74319,7 +74543,7 @@
 	
 	var _ChatStore2 = _interopRequireDefault(_ChatStore);
 	
-	var _ChannelStore = __webpack_require__(/*! ../../stores/ChannelStore */ 415);
+	var _ChannelStore = __webpack_require__(/*! ../../stores/ChannelStore */ 416);
 	
 	var _ChannelStore2 = _interopRequireDefault(_ChannelStore);
 	
@@ -74400,7 +74624,7 @@
 	exports.default = ChannelList;
 
 /***/ },
-/* 414 */
+/* 415 */
 /*!********************************************!*\
   !*** ./src/components/channel/Channel.jsx ***!
   \********************************************/
@@ -74422,11 +74646,11 @@
 	
 	var _materialUi2 = _interopRequireDefault(_materialUi);
 	
-	var _Actions = __webpack_require__(/*! ../../actions/Actions */ 424);
+	var _Actions = __webpack_require__(/*! ../../actions/Actions */ 405);
 	
 	var _Actions2 = _interopRequireDefault(_Actions);
 	
-	var _Constants = __webpack_require__(/*! ../../constants/Constants */ 425);
+	var _Constants = __webpack_require__(/*! ../../constants/Constants */ 408);
 	
 	var _Constants2 = _interopRequireDefault(_Constants);
 	
@@ -74479,7 +74703,7 @@
 	exports.default = Channel;
 
 /***/ },
-/* 415 */
+/* 416 */
 /*!************************************!*\
   !*** ./src/stores/ChannelStore.js ***!
   \************************************/
@@ -74499,17 +74723,17 @@
 	
 	var _alt2 = _interopRequireDefault(_alt);
 	
-	var _Actions = __webpack_require__(/*! ../actions/Actions */ 424);
+	var _Actions = __webpack_require__(/*! ../actions/Actions */ 405);
 	
 	var _Actions2 = _interopRequireDefault(_Actions);
 	
 	var _decorators = __webpack_require__(/*! alt-utils/lib/decorators */ 409);
 	
-	var _ChannelSource = __webpack_require__(/*! ../sources/ChannelSource */ 416);
+	var _ChannelSource = __webpack_require__(/*! ../sources/ChannelSource */ 417);
 	
 	var _ChannelSource2 = _interopRequireDefault(_ChannelSource);
 	
-	var _Constants = __webpack_require__(/*! ../constants/Constants */ 425);
+	var _Constants = __webpack_require__(/*! ../constants/Constants */ 408);
 	
 	var _Constants2 = _interopRequireDefault(_Constants);
 	
@@ -74606,7 +74830,7 @@
 	exports.default = _alt2.default.createStore(ChannelsStore);
 
 /***/ },
-/* 416 */
+/* 417 */
 /*!**************************************!*\
   !*** ./src/sources/ChannelSource.js ***!
   \**************************************/
@@ -74618,7 +74842,7 @@
 	  value: true
 	});
 	
-	var _Actions = __webpack_require__(/*! ../actions/Actions */ 424);
+	var _Actions = __webpack_require__(/*! ../actions/Actions */ 405);
 	
 	var _Actions2 = _interopRequireDefault(_Actions);
 	
@@ -74630,7 +74854,7 @@
 	
 	var _firebaseRefs2 = _interopRequireDefault(_firebaseRefs);
 	
-	var _Constants = __webpack_require__(/*! ../constants/Constants */ 425);
+	var _Constants = __webpack_require__(/*! ../constants/Constants */ 408);
 	
 	var _Constants2 = _interopRequireDefault(_Constants);
 	
@@ -74672,7 +74896,7 @@
 	exports.default = ChannelSource;
 
 /***/ },
-/* 417 */
+/* 418 */
 /*!***********************************************!*\
   !*** ./src/components/message/MessageBox.jsx ***!
   \***********************************************/
@@ -74708,6 +74932,10 @@
 	
 	var _firebaseRefs2 = _interopRequireDefault(_firebaseRefs);
 	
+	var _Actions = __webpack_require__(/*! ../../actions/Actions */ 405);
+	
+	var _Actions2 = _interopRequireDefault(_Actions);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -74734,21 +74962,17 @@
 	      if (evt.keyCode === 13 && _lodash2.default.trim(evt.target.value)) {
 	        evt.preventDefault();
 	
-	        _this.firebaseRef.push({
-	          message: _this.state.message
-	        });
+	        // Dispatch sendMessage
+	        _Actions2.default.sendMessage({ message: _this.state.message });
 	
-	        _this.setState({
-	          message: ''
-	        });
+	        //  Reset textarea
+	        _this.setState({ message: '' });
 	      }
 	    };
 	
 	    _this.state = {
 	      message: ''
 	    };
-	
-	    _this.firebaseRef = new _firebase2.default(_firebaseRefs2.default.messages);
 	    return _this;
 	  }
 	
@@ -74773,7 +74997,7 @@
 	exports.default = MessageBox;
 
 /***/ },
-/* 418 */
+/* 419 */
 /*!****************************************!*\
   !*** ./src/components/login/Login.jsx ***!
   \****************************************/
@@ -74795,7 +75019,7 @@
 	
 	var _materialUi2 = _interopRequireDefault(_materialUi);
 	
-	var _Actions = __webpack_require__(/*! ../../actions/Actions */ 424);
+	var _Actions = __webpack_require__(/*! ../../actions/Actions */ 405);
 	
 	var _Actions2 = _interopRequireDefault(_Actions);
 	
@@ -74854,7 +75078,7 @@
 	exports.default = Login;
 
 /***/ },
-/* 419 */
+/* 420 */
 /*!********************************!*\
   !*** ./src/config/appTheme.js ***!
   \********************************/
@@ -74905,7 +75129,7 @@
 	};
 
 /***/ },
-/* 420 */
+/* 421 */
 /*!***********************!*\
   !*** ./src/main.styl ***!
   \***********************/
@@ -74914,10 +75138,10 @@
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(/*! !./../~/css-loader!./../~/stylus-loader!./main.styl */ 421);
+	var content = __webpack_require__(/*! !./../~/css-loader!./../~/stylus-loader!./main.styl */ 422);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(/*! ./../~/style-loader/addStyles.js */ 423)(content, {});
+	var update = __webpack_require__(/*! ./../~/style-loader/addStyles.js */ 424)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -74934,13 +75158,13 @@
 	}
 
 /***/ },
-/* 421 */
+/* 422 */
 /*!********************************************************!*\
   !*** ./~/css-loader!./~/stylus-loader!./src/main.styl ***!
   \********************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(/*! ./../~/css-loader/lib/css-base.js */ 422)();
+	exports = module.exports = __webpack_require__(/*! ./../~/css-loader/lib/css-base.js */ 423)();
 	// imports
 	
 	
@@ -74951,7 +75175,7 @@
 
 
 /***/ },
-/* 422 */
+/* 423 */
 /*!**************************************!*\
   !*** ./~/css-loader/lib/css-base.js ***!
   \**************************************/
@@ -75010,7 +75234,7 @@
 
 
 /***/ },
-/* 423 */
+/* 424 */
 /*!*************************************!*\
   !*** ./~/style-loader/addStyles.js ***!
   \*************************************/
@@ -75263,97 +75487,6 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
-
-/***/ },
-/* 424 */
-/*!********************************!*\
-  !*** ./src/actions/Actions.js ***!
-  \********************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _alt = __webpack_require__(/*! ../alt */ 391);
-	
-	var _alt2 = _interopRequireDefault(_alt);
-	
-	var _firebase = __webpack_require__(/*! firebase */ 406);
-	
-	var _firebase2 = _interopRequireDefault(_firebase);
-	
-	var _firebaseRefs = __webpack_require__(/*! ../config/firebaseRefs */ 407);
-	
-	var _firebaseRefs2 = _interopRequireDefault(_firebaseRefs);
-	
-	var _Constants = __webpack_require__(/*! ../constants/Constants */ 425);
-	
-	var _Constants2 = _interopRequireDefault(_Constants);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var Actions = function () {
-	  function Actions() {
-	    _classCallCheck(this, Actions);
-	
-	    this.generateActions(_Constants2.default.CHANNELS_RECEIVED, _Constants2.default.CHANNELS_FAILED, _Constants2.default.MESSAGES_RECEIVED, _Constants2.default.MESSAGES_FAILED, _Constants2.default.MESSAGES_LOADING, _Constants2.default.SELECTED_CHANNEL, _Constants2.default.SEND_MESSAGE, _Constants2.default.SEND_MESSAGE_SUCCESS, _Constants2.default.SEND_MESSAGE_ERROR);
-	  }
-	
-	  /**
-	   * Log the user
-	   * @param args
-	   * @returns {function(dispatcher)}
-	   */
-	
-	
-	  _createClass(Actions, [{
-	    key: 'login',
-	    value: function login() {
-	      var args = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      return function (dispatch) {
-	        var firebaseRef = new _firebase2.default(_firebaseRefs2.default.socket);
-	        firebaseRef.authWithOAuthPopup("google").then(function (user) {
-	          dispatch(user);
-	        }).catch(function (err) {
-	          console.error(err);
-	        });
-	      };
-	    }
-	  }]);
-	
-	  return Actions;
-	}();
-	
-	exports.default = _alt2.default.createActions(Actions);
-
-/***/ },
-/* 425 */
-/*!************************************!*\
-  !*** ./src/constants/Constants.js ***!
-  \************************************/
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = {
-	  CHANNELS_RECEIVED: 'channelsReceived',
-	  CHANNELS_FAILED: 'channelsFailed',
-	  MESSAGES_RECEIVED: 'messagesReceived',
-	  MESSAGES_FAILED: 'messagesFailed',
-	  SELECTED_CHANNEL: 'selectedChannel',
-	  MESSAGES_LOADING: 'messagesLoading'
-	};
 
 /***/ }
 /******/ ]);
