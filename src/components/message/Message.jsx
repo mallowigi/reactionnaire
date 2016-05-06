@@ -10,10 +10,20 @@ class Message extends React.Component {
 
   render () {
     var message = this.props.message;
+    let secondaryText = (
+      <div style={{overflow: 'auto', height: 'auto'}}>
+        <span style={{color: 'black'}}>{message.author}</span><br/>
+        <small>{message.date}</small>
+      </div>
+    );
 
     let avatar = <Avatar src={message.profile_pic}></Avatar>;
     return (
-      <ListItem leftAvatar={avatar}>{message.message}</ListItem>
+      <ListItem leftAvatar={avatar}
+                primaryText={message.message}
+                secondaryText={secondaryText}>
+
+      </ListItem>
     )
   }
 }

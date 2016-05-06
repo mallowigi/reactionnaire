@@ -64,7 +64,7 @@ let MessagesSource = {
           date: new Date().toUTCString(),
           author: state.user.google.displayName,
           userId: state.user.uid,
-          profilePic: state.user.google.profileImageURL
+          profile_pic: state.user.google.profileImageURL
         });
         // Push message to firebase, and set the message's key
         message.key = firebaseRef.push(message).key();

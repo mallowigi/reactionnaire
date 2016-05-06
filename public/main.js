@@ -55558,8 +55558,14 @@
 	      var avatar = _react2.default.createElement(Avatar, { src: message.profile_pic });
 	      return _react2.default.createElement(
 	        ListItem,
-	        { leftAvatar: avatar },
-	        message.message
+	        { leftAvatar: avatar,
+	          primaryText: message.author,
+	          secondaryText: message.date },
+	        _react2.default.createElement(
+	          'p',
+	          null,
+	          message.message
+	        )
 	      );
 	    }
 	  }]);
@@ -74456,7 +74462,7 @@
 	          date: new Date().toUTCString(),
 	          author: state.user.google.displayName,
 	          userId: state.user.uid,
-	          profilePic: state.user.google.profileImageURL
+	          profile_pic: state.user.google.profileImageURL
 	        });
 	        // Push message to firebase, and set the message's key
 	        message.key = firebaseRef.push(message).key();
@@ -74497,7 +74503,7 @@
 	  this.date = new Date().toUTCString();
 	  this.author = '';
 	  this.userId = '';
-	  this.profilePic = '';
+	  this.profile_pic = '';
 	
 	  if (initData) {
 	    Object.assign(this, initData);

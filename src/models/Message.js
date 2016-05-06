@@ -4,7 +4,7 @@ class Message {
     this.date = new Date().toUTCString();
     this.author = '';
     this.userId = '';
-    this.profilePic = '';
+    this.profile_pic = '';
 
     if (initData) {
       Object.assign(this, initData);
