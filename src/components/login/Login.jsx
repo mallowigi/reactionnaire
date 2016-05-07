@@ -2,11 +2,13 @@ import React from 'react';
 import mui from 'material-ui';
 import Actions from '../../actions/Actions';
 
-const { Card, CardText, RaisedButton} = mui;
+import {withRouter} from 'react-router';
+const {Card, CardText, RaisedButton} = mui;
 
 class Login extends React.Component {
+
   onClick = (evt) => {
-    Actions.login();
+    Actions.login(this.props.router);
   };
 
   render () {
@@ -25,4 +27,4 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+export default withRouter(Login);

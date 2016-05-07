@@ -26,12 +26,14 @@ class Actions {
    * @param args
    * @returns {function(dispatcher)}
    */
-  login () {
+  login (router) {
     return (dispatch) => {
       let firebaseRef = new Firebase(firebaseRefs.socket);
       firebaseRef.authWithOAuthPopup("google")
         .then(user => {
-          dispatch(user)
+          dispatch(user);
+
+          router.push('/chat');
         })
         .catch(err => {
           console.error(err);
