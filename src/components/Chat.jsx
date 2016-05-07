@@ -1,9 +1,11 @@
 import React from 'react';
-
+import {withRouter} from 'react-router';
 
 import MessageList from './message/MessageList.jsx';
 import ChannelList from './channel/ChannelList.jsx';
 import MessageBox from './message/MessageBox.jsx';
+
+import ChatStore from '../stores/ChatStore';
 
 class Chat extends React.Component {
   render () {
@@ -20,6 +22,16 @@ class Chat extends React.Component {
       </div>
     );
   }
+
+  /**
+   * Called before transitioning
+   */
+  componentWillMount () {
+    var state = ChatStore.getState();
+    if (!state.user.uid) {
+      this.props.router.replace('/login');
+    }
+  }
 }
 
-export default Chat;
+export default withRouter(Chat);
