@@ -19,11 +19,22 @@ let ChannelSource = {
      * Binds the data to the state of the store this source will be bound to
      * @param state
      */
-    remote(state) {
+    remote(state, selectedChannelKey) {
       return new Promise((resolve, reject) => {
         // Get the data from firebase
         firebaseRef.once('value', (snapshot) => {
           let channels = snapshot.val();
+
+          // We need to track the selectedChannel
+          if (!selectedChannelKey) {
+            selectedChannelKey = _.keys(channels)[0];
+          }
+
+          let selectedChannel = channels[selectedChannelKey];
+          if (selectedChannel) {
+            selectedChannel.selected = true;
+          }
+
           resolve(channels);
         });
       });

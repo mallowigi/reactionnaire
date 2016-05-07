@@ -12,9 +12,29 @@ const {Card, List, CircularProgress} = mui;
 class ChannelList extends React.Component {
   constructor (props) {
     super(props);
+  }
 
-    // Call the new getChannels method that get imported from the datasource
-    ChannelStore.getChannels();
+  /**
+   * When the channel list is mounted, get the channels
+   */
+  componentDidMount() {
+    // Get the channel from the route
+    if (this.props.params) {
+      this.selectedChannel = this.props.params.channel;
+    }
+    // Call getChannels with the selected channel from the url
+    ChannelStore.getChannels(this.selectedChannel);
+  }
+
+  /**
+   * Watch for url changes, in order to get channels everytime the url changes
+   * @param nextProps
+   */
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.params && this.selectedChannel !== nextProps.params.channel) {
+      this.selectedChannel = nextProps.params.channel;
+      ChannelStore.getChannels(this.selectedChannel);
+    }
   }
 
   static getStores () {

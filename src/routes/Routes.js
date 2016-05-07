@@ -9,7 +9,9 @@ import Chat from '../components/Chat.jsx';
 let routes = (
   <Route path="/" component={App}>
     <IndexRoute component={Chat}/>
-    <Route path="chat" component={Chat}/>
+    <Route path="chat" component={Chat}>
+      <Route path=":channel" component={Chat}/>
+    </Route>
     <Route path="login" component={Login}/>
   </Route>
 );

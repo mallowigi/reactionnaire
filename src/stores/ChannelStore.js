@@ -27,8 +27,7 @@ class ChannelsStore {
   @bind(Actions[Constants.CHANNELS_RECEIVED])
   receivedChannels (channels) {
     channels = _.toMap(channels);
-    let selectedChannel = _.first((channels));
-    selectedChannel.selected = true;
+    let selectedChannel = _.find(channels, {selected: true});
 
     this.setState({
       channels,

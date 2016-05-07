@@ -7,12 +7,13 @@ import MessageBox from './message/MessageBox.jsx';
 
 import ChatStore from '../stores/ChatStore';
 
+// kkfk
 class Chat extends React.Component {
   render () {
     return (
       <div>
         <section id="app" style={{maxHeight: '60vh'}}>
-          <ChannelList></ChannelList>
+          <ChannelList {...this.props}></ChannelList>
           <MessageList></MessageList>
         </section>
 

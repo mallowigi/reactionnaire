@@ -4112,7 +4112,11 @@
 	  _reactRouter.Route,
 	  { path: '/', component: _App2.default },
 	  _react2.default.createElement(_reactRouter.IndexRoute, { component: _Chat2.default }),
-	  _react2.default.createElement(_reactRouter.Route, { path: 'chat', component: _Chat2.default }),
+	  _react2.default.createElement(
+	    _reactRouter.Route,
+	    { path: 'chat', component: _Chat2.default },
+	    _react2.default.createElement(_reactRouter.Route, { path: ':channel', component: _Chat2.default })
+	  ),
 	  _react2.default.createElement(_reactRouter.Route, { path: 'login', component: _Login2.default })
 	);
 	
@@ -63653,6 +63657,8 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _reactRouter = __webpack_require__(/*! react-router */ 172);
+	
 	var _MessageList = __webpack_require__(/*! ./message/MessageList.jsx */ 470);
 	
 	var _MessageList2 = _interopRequireDefault(_MessageList);
@@ -63665,6 +63671,10 @@
 	
 	var _MessageBox2 = _interopRequireDefault(_MessageBox);
 	
+	var _ChatStore = __webpack_require__(/*! ../stores/ChatStore */ 476);
+	
+	var _ChatStore2 = _interopRequireDefault(_ChatStore);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -63672,6 +63682,8 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	// kkfk
 	
 	var Chat = function (_React$Component) {
 	  _inherits(Chat, _React$Component);
@@ -63691,7 +63703,7 @@
 	        _react2.default.createElement(
 	          'section',
 	          { id: 'app', style: { maxHeight: '60vh' } },
-	          _react2.default.createElement(_ChannelList2.default, null),
+	          _react2.default.createElement(_ChannelList2.default, this.props),
 	          _react2.default.createElement(_MessageList2.default, null)
 	        ),
 	        _react2.default.createElement(
@@ -63701,12 +63713,25 @@
 	        )
 	      );
 	    }
+	
+	    /**
+	     * Called before transitioning
+	     */
+	
+	  }, {
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      var state = _ChatStore2.default.getState();
+	      if (!state.user.uid) {
+	        this.props.router.replace('/login');
+	      }
+	    }
 	  }]);
 	
 	  return Chat;
 	}(_react2.default.Component);
 	
-	exports.default = Chat;
+	exports.default = (0, _reactRouter.withRouter)(Chat);
 
 /***/ },
 /* 470 */
@@ -80785,15 +80810,39 @@
 	  function ChannelList(props) {
 	    _classCallCheck(this, ChannelList);
 	
-	    // Call the new getChannels method that get imported from the datasource
-	
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ChannelList).call(this, props));
-	
-	    _ChannelStore2.default.getChannels();
-	    return _this;
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ChannelList).call(this, props));
 	  }
 	
+	  /**
+	   * When the channel list is mounted, get the channels
+	   */
+	
+	
 	  _createClass(ChannelList, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      // Get the channel from the route
+	      if (this.props.params) {
+	        this.selectedChannel = this.props.params.channel;
+	      }
+	      // Call getChannels with the selected channel from the url
+	      _ChannelStore2.default.getChannels(this.selectedChannel);
+	    }
+	
+	    /**
+	     * Watch for url changes, in order to get channels everytime the url changes
+	     * @param nextProps
+	     */
+	
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      if (nextProps.params && this.selectedChannel !== nextProps.params.channel) {
+	        this.selectedChannel = nextProps.params.channel;
+	        _ChannelStore2.default.getChannels(this.selectedChannel);
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      // Display a loader while fetching channels
@@ -80909,7 +80958,7 @@
 	      return _react2.default.createElement(
 	        ListItem,
 	        { style: style, key: this.props.channel.key,
-	          onClick: this.onClick },
+	          href: '/#/chat/' + this.props.channel.key },
 	        '#',
 	        this.props.channel.name
 	      );
@@ -81017,8 +81066,7 @@
 	    key: 'receivedChannels',
 	    value: function receivedChannels(channels) {
 	      channels = _lodashMixins2.default.toMap(channels);
-	      var selectedChannel = _lodashMixins2.default.first(channels);
-	      selectedChannel.selected = true;
+	      var selectedChannel = _lodashMixins2.default.find(channels, { selected: true });
 	
 	      this.setState({
 	        channels: channels,
@@ -81095,11 +81143,22 @@
 	     * @param state
 	     */
 	
-	    remote: function remote(state) {
+	    remote: function remote(state, selectedChannelKey) {
 	      return new Promise(function (resolve, reject) {
 	        // Get the data from firebase
 	        firebaseRef.once('value', function (snapshot) {
 	          var channels = snapshot.val();
+	
+	          // We need to track the selectedChannel
+	          if (!selectedChannelKey) {
+	            selectedChannelKey = _.keys(channels)[0];
+	          }
+	
+	          var selectedChannel = channels[selectedChannelKey];
+	          if (selectedChannel) {
+	            selectedChannel.selected = true;
+	          }
+	
 	          resolve(channels);
 	        });
 	      });
